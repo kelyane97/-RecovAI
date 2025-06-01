@@ -28,4 +28,95 @@ index.html
     typing.classList.remove("italic", "text-gray-600");
     typing.innerHTML = "🤖 Mira : Après vérification, votre solde est de <strong>1 537,42 €</strong>. Souhaitez-vous planifier un paiement ?";
   }, 2000);
+</script> 
+<section class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+  <div class="max-w-md w-full bg-white shadow-xl rounded-xl p-6 space-y-4 animate-fade-in">
+    <div class="flex items-center space-x-3">
+      <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl animate-pulse">
+        🤖
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold">Mira</h2>
+        <p class="text-sm text-gray-500">Assistant IA RecovAI</p>
+      </div>
+    </div>
+
+    <div id="chatBox" class="bg-gray-50 rounded-md p-4 h-56 overflow-y-auto text-sm space-y-3 border border-gray-200">
+      <div class="text-right text-blue-700">👩‍💼 Client : Bonjour, quel est mon solde ?</div>
+      <div id="iaTyping1" class="text-left text-gray-600 italic">🤖 Mira réfléchit...</div>
+    </div>
+
+    <form onsubmit="return false;" class="flex items-center space-x-2 mt-4">
+      <input type="text" disabled placeholder="Fonction bientôt disponible..." class="flex-1 border border-gray-300 rounded-md p-2 bg-gray-100 text-sm text-gray-500" />
+      <button disabled class="bg-blue-400 text-white px-4 py-2 rounded opacity-60 cursor-not-allowed">Répondre</button>
+    </form>
+  </div>
+</section>
+
+<!-- Fade-in animation -->
+<style>
+  .animate-fade-in {
+    animation: fadeIn 1.2s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<script>
+  // Première réponse
+  setTimeout(() => {
+    const iaTyping1 = document.getElementById("iaTyping1");
+    iaTyping1.classList.remove("italic", "text-gray-600");
+    iaTyping1.innerHTML = "🤖 Mira : Après vérification, votre solde est de <strong>1 537,42 €</strong>.";
+
+    // Deuxième échange simulé
+    const chatBox = document.getElementById("chatBox");
+    const question2 = document.createElement("div");
+    question2.className = "text-right text-blue-700";
+    question2.textContent = "👩‍💼 Client : Puis-je le payer en plusieurs fois ?";
+    chatBox.appendChild(question2);
+
+    const typing2 = document.createElement("div");
+    typing2.id = "iaTyping2";
+    typing2.className = "text-left text-gray-600 italic";
+    typing2.textContent = "🤖 Mira réfléchit...";
+    chatBox.appendChild(typing2);
+
+    // Réponse après délai
+    setTimeout(() => {
+      typing2.classList.remove("italic", "text-gray-600");
+      typing2.innerHTML = "🤖 Mira : Bien sûr. Je peux vous proposer un échéancier en 3 fois sans frais. Souhaitez-vous que je vous l’envoie par mail ?";
+    }, 1800);
+
+  }, 2000);
 </script>
+<!-- Ligne de séparation -->
+<hr class="my-8 border-gray-300 w-full max-w-md" />
+
+<!-- Première version de Mira (conservée en bas) -->
+<section class="max-w-md w-full bg-white shadow-md rounded-xl p-6 space-y-4 mb-10">
+  <div class="flex items-center space-x-3">
+    <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white text-lg">
+      🤖
+    </div>
+    <div>
+      <h3 class="text-lg font-semibold">Mira (mode classique)</h3>
+      <p class="text-xs text-gray-500">Assistant IA de RecovAI</p>
+    </div>
+  </div>
+
+  <div class="bg-gray-50 rounded-md p-4 text-sm border border-gray-200">
+    <p class="text-right text-blue-700">👩‍💼 Client : Bonjour, quel est mon solde ?</p>
+    <p class="text-left text-gray-800 mt-2">🤖 Mira : Votre solde est de <strong>1 537,42 €</strong>.</p>
+  </div>
+</section>
+
+<!-- Bouton Retour -->
+<div class="text-center mb-10">
+  <a href="../index.html" class="inline-block bg-gray-700 text-white px-5 py-2 rounded-full hover:bg-gray-900 transition">
+    ← Retour à l'accueil
+  </a>
+</div>
+
