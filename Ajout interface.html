@@ -1,0 +1,51 @@
+interface/index.html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RecovAI – Démo Interface</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <header class="bg-white shadow p-4 text-center">
+    <h1 class="text-3xl font-bold">🤖 RecovAI</h1>
+    <p class="text-sm text-gray-600">Interface IA de recouvrement – Démonstration visuelle</p>
+  </header>
+
+  <main class="p-6 max-w-4xl mx-auto">
+    <section class="bg-white p-6 rounded-xl shadow mb-6">
+      <h2 class="text-xl font-semibold mb-4">🎯 Objectif</h2>
+      <p>Simuler une interface d'IA capable de dialoguer avec un client pour gérer un dossier de recouvrement.</p>
+    </section>
+
+    <section class="bg-white p-6 rounded-xl shadow mb-6">
+      <h2 class="text-xl font-semibold mb-4">🧑‍💼 Assistant virtuel</h2>
+      <div class="flex flex-col md:flex-row items-center">
+        <img src="https://via.placeholder.com/150" alt="Avatar IA" class="rounded-full w-32 h-32 mb-4 md:mb-0 md:mr-6" />
+        <div>
+          <p class="text-lg">Bonjour, je suis votre assistante RecovAI. Souhaitez-vous consulter votre solde ou envoyer un justificatif ?</p>
+          <div class="mt-4 space-x-2">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">📄 Voir mon dossier</button>
+            <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">📤 Envoyer un justificatif</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-semibold mb-4">📊 Résumé du dossier</h2>
+      <ul class="list-disc list-inside">
+        <li>Dossier n° : <strong>2025-00142</strong></li>
+        <li>Solde restant dû : <strong>820 €</strong></li>
+        <li>Dernier paiement : 17 mai 2025</li>
+        <li>Prochaine relance : 3 juin 2025</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="text-center text-sm text-gray-500 mt-10 p-4">
+    &copy; 2025 RecovAI – Démo visuelle sans traitement réel de données
+  </footer>
+</body>
+</html>
