@@ -1,4 +1,10 @@
+from pathlib import Path
 
+# Lien vers le fond style "écran data / finance"
+new_background_url = "https://images.unsplash.com/photo-1612831455544-d6032a04891d?auto=format&fit=crop&w=1400&q=80"
+
+# HTML complet avec fond data + Mira + dashboard
+html_with_data_background = f"""
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,66 +13,54 @@
   <title>RecovAI - Démo IA</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    body {
-      background: url('https://images.unsplash.com/photo-1534850336045-c6c6d287f89e?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
+    body {{
+      background: url('{new_background_url}') no-repeat center center fixed;
       background-size: cover;
-    }
-    .backdrop {
+    }}
+    .backdrop {{
       backdrop-filter: blur(8px);
       background-color: rgba(255, 255, 255, 0.8);
-    }
-    .animate-fade-in {
+    }}
+    .animate-fade-in {{
       animation: fadeIn 1.2s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    }}
+    @keyframes fadeIn {{
+      from {{ opacity: 0; transform: translateY(10px); }}
+      to {{ opacity: 1; transform: translateY(0); }}
+    }}
   </style>
 </head>
 <body class="text-gray-800">
-  from pathlib import Path
 
-# Contenu HTML d'un mini tableau de bord à ajouter dans RecovAI
-dashboard_html = """
-<!-- Tableau de bord RecovAI -->
-<section class="max-w-md w-full bg-white shadow-lg rounded-xl p-6 space-y-4 mt-10">
-  <h3 class="text-lg font-semibold text-gray-800">📊 Tableau de bord RecovAI</h3>
-  <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
-    <div class="bg-blue-50 p-4 rounded-md shadow">
-      <p class="text-xs text-gray-500">Clients simulés</p>
-      <p class="text-2xl font-bold">12</p>
-    </div>
-    <div class="bg-green-50 p-4 rounded-md shadow">
-      <p class="text-xs text-gray-500">Paiements à venir</p>
-      <p class="text-2xl font-bold">5</p>
-    </div>
-    <div class="bg-yellow-50 p-4 rounded-md shadow">
-      <p class="text-xs text-gray-500">Total dû</p>
-      <p class="text-2xl font-bold">7 200 €</p>
-    </div>
-    <div class="bg-red-50 p-4 rounded-md shadow">
-      <p class="text-xs text-gray-500">Relances en attente</p>
-      <p class="text-2xl font-bold">3</p>
-    </div>
-  </div>
-</section>
-"""
-
-# Sauvegarder le tableau dans un fichier HTML partiel
-output_path = Path("/mnt/data/tableau_de_bord_recovai.html")
-output_path.write_text(dashboard_html, encoding="utf-8")
-
-output_path.name
-
-
-<!-- Bannière haut de page -->
 <header class="w-full text-center py-6 bg-blue-900 text-white shadow-lg">
   <h1 class="text-3xl font-bold">🤖 RecovAI</h1>
   <p class="text-sm mt-1">L’assistant intelligent pour le recouvrement client</p>
 </header>
 
 <main class="backdrop min-h-screen flex flex-col items-center justify-center p-6 space-y-12">
+
+  <!-- Tableau de bord -->
+  <section class="max-w-md w-full bg-white shadow-lg rounded-xl p-6 space-y-4 mt-6">
+    <h3 class="text-lg font-semibold text-gray-800">📊 Tableau de bord RecovAI</h3>
+    <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+      <div class="bg-blue-50 p-4 rounded-md shadow">
+        <p class="text-xs text-gray-500">Clients simulés</p>
+        <p class="text-2xl font-bold">12</p>
+      </div>
+      <div class="bg-green-50 p-4 rounded-md shadow">
+        <p class="text-xs text-gray-500">Paiements à venir</p>
+        <p class="text-2xl font-bold">5</p>
+      </div>
+      <div class="bg-yellow-50 p-4 rounded-md shadow">
+        <p class="text-xs text-gray-500">Total dû</p>
+        <p class="text-2xl font-bold">7 200 €</p>
+      </div>
+      <div class="bg-red-50 p-4 rounded-md shadow">
+        <p class="text-xs text-gray-500">Relances en attente</p>
+        <p class="text-2xl font-bold">3</p>
+      </div>
+    </div>
+  </section>
 
   <!-- IA enrichie -->
   <section class="max-w-md w-full bg-white shadow-xl rounded-xl p-6 space-y-4 animate-fade-in">
@@ -87,7 +81,7 @@ output_path.name
     </form>
   </section>
 
-  <!-- IA classique -->
+  <!-- Mode classique -->
   <section class="max-w-md w-full bg-white shadow-md rounded-xl p-6 space-y-4">
     <div class="flex items-center space-x-3">
       <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white text-lg">🤖</div>
@@ -102,32 +96,13 @@ output_path.name
     </div>
   </section>
 
-  <!-- Formulaire contact fictif -->
-  <section class="max-w-md w-full bg-white shadow-sm rounded-xl p-6">
-    <h3 class="text-lg font-semibold mb-2">📬 Contact</h3>
-    <form onsubmit="return false;" class="space-y-4">
-      <input type="text" placeholder="Nom" class="w-full border border-gray-300 rounded-md p-2" />
-      <input type="email" placeholder="Email" class="w-full border border-gray-300 rounded-md p-2" />
-      <textarea placeholder="Votre message..." class="w-full border border-gray-300 rounded-md p-2 h-24"></textarea>
-      <button disabled class="w-full bg-gray-400 text-white py-2 rounded opacity-60 cursor-not-allowed">Envoyer</button>
-    </form>
-  </section>
-
-  <!-- Bloc RGPD -->
-  <section class="max-w-md w-full text-xs text-center text-gray-600 italic">
-    ✅ RecovAI est une démonstration fictive conforme aux principes du RGPD. Aucune donnée n’est stockée.
-  </section>
-
-  <!-- Bouton retour -->
   <div class="text-center mt-8 mb-10">
     <a href="../index.html" class="inline-block bg-gray-800 text-white px-5 py-2 rounded-full hover:bg-black transition">← Retour à l'accueil</a>
   </div>
-
 </main>
 
-<!-- JS conversation -->
 <script>
-  setTimeout(() => {
+  setTimeout(() => {{
     const iaTyping1 = document.getElementById("iaTyping1");
     iaTyping1.classList.remove("italic", "text-gray-600");
     iaTyping1.innerHTML = "🤖 Mira : Après vérification, votre solde est de <strong>1 537,42 €</strong>.";
@@ -143,12 +118,19 @@ output_path.name
     typing2.textContent = "🤖 Mira réfléchit...";
     chatBox.appendChild(typing2);
 
-    setTimeout(() => {
+    setTimeout(() => {{
       typing2.classList.remove("italic", "text-gray-600");
       typing2.innerHTML = "🤖 Mira : Bien sûr. Je peux vous proposer un échéancier en 3 fois sans frais.";
-    }, 1800);
-  }, 2000);
+    }}, 1800);
+  }}, 2000);
 </script>
 
 </body>
 </html>
+"""
+
+# Enregistrer le fichier
+output_path = Path("/mnt/data/recovai_demo_fond_data.html")
+output_path.write_text(html_with_data_background, encoding="utf-8")
+
+output_path.name
