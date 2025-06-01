@@ -25,6 +25,40 @@
   </style>
 </head>
 <body class="text-gray-800">
+  from pathlib import Path
+
+# Contenu HTML d'un mini tableau de bord à ajouter dans RecovAI
+dashboard_html = """
+<!-- Tableau de bord RecovAI -->
+<section class="max-w-md w-full bg-white shadow-lg rounded-xl p-6 space-y-4 mt-10">
+  <h3 class="text-lg font-semibold text-gray-800">📊 Tableau de bord RecovAI</h3>
+  <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+    <div class="bg-blue-50 p-4 rounded-md shadow">
+      <p class="text-xs text-gray-500">Clients simulés</p>
+      <p class="text-2xl font-bold">12</p>
+    </div>
+    <div class="bg-green-50 p-4 rounded-md shadow">
+      <p class="text-xs text-gray-500">Paiements à venir</p>
+      <p class="text-2xl font-bold">5</p>
+    </div>
+    <div class="bg-yellow-50 p-4 rounded-md shadow">
+      <p class="text-xs text-gray-500">Total dû</p>
+      <p class="text-2xl font-bold">7 200 €</p>
+    </div>
+    <div class="bg-red-50 p-4 rounded-md shadow">
+      <p class="text-xs text-gray-500">Relances en attente</p>
+      <p class="text-2xl font-bold">3</p>
+    </div>
+  </div>
+</section>
+"""
+
+# Sauvegarder le tableau dans un fichier HTML partiel
+output_path = Path("/mnt/data/tableau_de_bord_recovai.html")
+output_path.write_text(dashboard_html, encoding="utf-8")
+
+output_path.name
+
 
 <!-- Bannière haut de page -->
 <header class="w-full text-center py-6 bg-blue-900 text-white shadow-lg">
