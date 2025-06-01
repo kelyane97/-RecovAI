@@ -32,3 +32,13 @@ RecovAI/
 ├── docs/               # Captures, schémas, PDF
 ├── README.md
 ├── LICENSE
+---
+
+## 📫 Contact
+
+Vous êtes un recruteur, une entreprise ou un acteur du recouvrement intéressé par ce projet ?  
+Je suis ouverte à toute collaboration, opportunité ou retour constructif.
+
+✉️ **Email pro** : kelyane37@gmail.com  
+
+🌐 **Portfolio complet** : disponible sur demande
