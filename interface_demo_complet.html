@@ -1,136 +1,125 @@
+# Recréation du HTML final avec styles pro et images corrigées
 from pathlib import Path
+import zipfile
 
-# Lien vers le fond style "écran data / finance"
-new_background_url = "https://images.unsplash.com/photo-1612831455544-d6032a04891d?auto=format&fit=crop&w=1400&q=80"
-
-# HTML complet avec fond data + Mira + dashboard
-html_with_data_background = f"""
+dashboard_html_pro = """
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RecovAI - Démo IA</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RecovAI - Tableau de bord</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {{
-      background: url('{new_background_url}') no-repeat center center fixed;
+      background: url('fond_futuriste.png') no-repeat center center fixed;
       background-size: cover;
+      backdrop-filter: blur(4px);
     }}
-    .backdrop {{
-      backdrop-filter: blur(8px);
-      background-color: rgba(255, 255, 255, 0.8);
-    }}
-    .animate-fade-in {{
-      animation: fadeIn 1.2s ease-in-out;
-    }}
-    @keyframes fadeIn {{
-      from {{ opacity: 0; transform: translateY(10px); }}
-      to {{ opacity: 1; transform: translateY(0); }}
+    .bg-glass {{
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     }}
   </style>
 </head>
-<body class="text-gray-800">
+<body class="text-white min-h-screen flex flex-col items-center pt-10">
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold tracking-wide">Espace personnel – RecovAI</h1>
+    <p class="text-blue-300 mt-2">Votre tableau de bord intelligent</p>
+  </header>
 
-<header class="w-full text-center py-6 bg-blue-900 text-white shadow-lg">
-  <h1 class="text-3xl font-bold">🤖 RecovAI</h1>
-  <p class="text-sm mt-1">L’assistant intelligent pour le recouvrement client</p>
-</header>
-
-<main class="backdrop min-h-screen flex flex-col items-center justify-center p-6 space-y-12">
-
-  <!-- Tableau de bord -->
-  <section class="max-w-md w-full bg-white shadow-lg rounded-xl p-6 space-y-4 mt-6">
-    <h3 class="text-lg font-semibold text-gray-800">📊 Tableau de bord RecovAI</h3>
-    <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
-      <div class="bg-blue-50 p-4 rounded-md shadow">
-        <p class="text-xs text-gray-500">Clients simulés</p>
-        <p class="text-2xl font-bold">12</p>
+  <main class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl w-full px-6">
+    <!-- Carte identité -->
+    <div class="bg-glass">
+      <h2 class="text-2xl font-semibold mb-4">Informations personnelles</h2>
+      <div class="flex items-center gap-4 mb-4">
+        <img src="photo_debiteur.png" alt="Photo du débiteur" class="w-20 h-20 rounded-full border-2 border-white shadow">
+        <div>
+          <p><strong>Nom :</strong> Thomas Martin</p>
+          <p><strong>Date de naissance :</strong> 12/04/1982</p>
+          <p><strong>Adresse :</strong> 23 rue de Paris, 75001 Paris</p>
+        </div>
       </div>
-      <div class="bg-green-50 p-4 rounded-md shadow">
-        <p class="text-xs text-gray-500">Paiements à venir</p>
-        <p class="text-2xl font-bold">5</p>
-      </div>
-      <div class="bg-yellow-50 p-4 rounded-md shadow">
-        <p class="text-xs text-gray-500">Total dû</p>
-        <p class="text-2xl font-bold">7 200 €</p>
-      </div>
-      <div class="bg-red-50 p-4 rounded-md shadow">
-        <p class="text-xs text-gray-500">Relances en attente</p>
-        <p class="text-2xl font-bold">3</p>
-      </div>
+      <p><strong>Créancier :</strong> Mme Sylnevia</p>
+      <p><strong>Montant total :</strong> 5 000 €</p>
+      <p><strong>Solde restant :</strong> 3 000 €</p>
+      <p><strong>Statut :</strong> En cours</p>
     </div>
-  </section>
 
-  <!-- IA enrichie -->
-  <section class="max-w-md w-full bg-white shadow-xl rounded-xl p-6 space-y-4 animate-fade-in">
-    <div class="flex items-center space-x-3">
-      <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl animate-pulse">🤖</div>
-      <div>
-        <h2 class="text-xl font-semibold">Mira</h2>
-        <p class="text-sm text-gray-500">Assistant IA RecovAI</p>
-      </div>
+    <!-- Calendrier -->
+    <div class="bg-glass">
+      <h2 class="text-2xl font-semibold mb-4">Calendrier de paiements</h2>
+      <ul class="space-y-2">
+        <li>15/06/2025 – 1 000 € – <span class="text-yellow-300">À venir</span></li>
+        <li>15/05/2025 – 1 000 € – <span class="text-green-400">Payé</span></li>
+        <li>15/04/2025 – 1 000 € – <span class="text-green-400">Payé</span></li>
+      </ul>
+      <button class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        Effectuer un paiement
+      </button>
     </div>
-    <div id="chatBox" class="bg-gray-50 rounded-md p-4 h-56 overflow-y-auto text-sm space-y-3 border border-gray-200">
-      <div class="text-right text-blue-700">👩‍💼 Client : Bonjour, quel est mon solde ?</div>
-      <div id="iaTyping1" class="text-left text-gray-600 italic">🤖 Mira réfléchit...</div>
-    </div>
-    <form onsubmit="return false;" class="flex items-center space-x-2 mt-4">
-      <input type="text" disabled placeholder="Fonction bientôt disponible..." class="flex-1 border border-gray-300 rounded-md p-2 bg-gray-100 text-sm text-gray-500" />
-      <button disabled class="bg-blue-400 text-white px-4 py-2 rounded opacity-60 cursor-not-allowed">Répondre</button>
-    </form>
-  </section>
 
-  <!-- Mode classique -->
-  <section class="max-w-md w-full bg-white shadow-md rounded-xl p-6 space-y-4">
-    <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white text-lg">🤖</div>
-      <div>
-        <h3 class="text-lg font-semibold">Mira (mode classique)</h3>
-        <p class="text-xs text-gray-500">Assistant IA de RecovAI</p>
-      </div>
+    <!-- Liste des dettes -->
+    <div class="bg-glass col-span-2">
+      <h2 class="text-2xl font-semibold mb-4">Mes créanciers</h2>
+      <table class="w-full text-left table-auto bg-white text-black rounded">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2">Créancier</th>
+            <th class="px-4 py-2">Montant</th>
+            <th class="px-4 py-2">Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hover:bg-gray-50"><td class="px-4 py-2">American Express</td><td>2 150 €</td><td>En cours</td></tr>
+          <tr class="hover:bg-gray-50"><td class="px-4 py-2">EDF</td><td>342 €</td><td>En attente</td></tr>
+          <tr class="hover:bg-gray-50"><td class="px-4 py-2">SFR</td><td>121 €</td><td>Clôturé</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="bg-gray-50 rounded-md p-4 text-sm border border-gray-200">
-      <p class="text-right text-blue-700">👩‍💼 Client : Bonjour, quel est mon solde ?</p>
-      <p class="text-left text-gray-800 mt-2">🤖 Mira : Votre solde est de <strong>1 537,42 €</strong>.</p>
-    </div>
-  </section>
 
-  <div class="text-center mt-8 mb-10">
-    <a href="../index.html" class="inline-block bg-gray-800 text-white px-5 py-2 rounded-full hover:bg-black transition">← Retour à l'accueil</a>
+    <!-- Documents -->
+    <div class="bg-glass">
+      <h2 class="text-2xl font-semibold mb-4">Transmettre un justificatif</h2>
+      <input type="file" class="text-black mb-4">
+      <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Envoyer
+      </button>
+    </div>
+
+    <!-- Contact gestionnaire -->
+    <div class="bg-glass">
+      <h2 class="text-2xl font-semibold mb-4">Votre gestionnaire</h2>
+      <p><strong>Nom :</strong> Mme Brigitte Lefèvre</p>
+      <p><strong>Email :</strong> b.lefevre@recovai.fr</p>
+      <p><strong>Téléphone :</strong> 01 23 45 67 89</p>
+      <textarea placeholder="Laisser un message..." class="w-full mt-4 p-2 rounded text-black"></textarea>
+      <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Envoyer au gestionnaire
+      </button>
+    </div>
+  </main>
+
+  <!-- Chatbot Milo -->
+  <div class="fixed bottom-4 right-4">
+    <img src="milo_chatbot.png" alt="Chatbot Milo" class="w-16 h-16 rounded-full shadow-lg cursor-pointer">
   </div>
-</main>
-
-<script>
-  setTimeout(() => {{
-    const iaTyping1 = document.getElementById("iaTyping1");
-    iaTyping1.classList.remove("italic", "text-gray-600");
-    iaTyping1.innerHTML = "🤖 Mira : Après vérification, votre solde est de <strong>1 537,42 €</strong>.";
-
-    const chatBox = document.getElementById("chatBox");
-    const question2 = document.createElement("div");
-    question2.className = "text-right text-blue-700";
-    question2.textContent = "👩‍💼 Client : Puis-je le payer en plusieurs fois ?";
-    chatBox.appendChild(question2);
-
-    const typing2 = document.createElement("div");
-    typing2.className = "text-left text-gray-600 italic";
-    typing2.textContent = "🤖 Mira réfléchit...";
-    chatBox.appendChild(typing2);
-
-    setTimeout(() => {{
-      typing2.classList.remove("italic", "text-gray-600");
-      typing2.innerHTML = "🤖 Mira : Bien sûr. Je peux vous proposer un échéancier en 3 fois sans frais.";
-    }}, 1800);
-  }}, 2000);
-</script>
-
 </body>
 </html>
 """
 
-# Enregistrer le fichier
-output_path = Path("/mnt/data/recovai_demo_fond_data.html")
-output_path.write_text(html_with_data_background, encoding="utf-8")
+# Sauvegarder le fichier HTML
+final_html_path = Path("/mnt/data/recovai_dashboard_pro.html")
+final_html_path.write_text(dashboard_html_pro, encoding="utf-8")
 
-output_path.name
+# Créer le ZIP final
+zip_path = Path("/mnt/data/RecovAI_DesignFinal.zip")
+with zipfile.ZipFile(zip_path, 'w') as zipf:
+    zipf.write(final_html_path, arcname="recovai_dashboard.html")
+    zipf.write("/mnt/data/photo_debiteur.png", arcname="photo_debiteur.png")
+    zipf.write("/mnt/data/milo_chatbot.png", arcname="milo_chatbot.png")
+    zipf.write("/mnt/data/fond_futuriste.png", arcname="fond_futuriste.png")
+
+zip_path.name
