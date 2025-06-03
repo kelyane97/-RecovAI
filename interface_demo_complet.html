@@ -1,125 +1,50 @@
-# Recréation du HTML final avec styles pro et images corrigées
-from pathlib import Path
-import zipfile
+# Génération d'un fichier test pour vérifier l'affichage des deux images (fond + femme IA)
 
-dashboard_html_pro = """
+test_affichage_html = """
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RecovAI - Tableau de bord</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test affichage images RecovAI</title>
   <style>
-    body {{
+    body {
+      margin: 0;
+      padding: 0;
       background: url('fond_futuriste.png') no-repeat center center fixed;
       background-size: cover;
-      backdrop-filter: blur(4px);
-    }}
-    .bg-glass {{
-      background: rgba(0, 0, 0, 0.7);
+      font-family: sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(2px);
+    }
+    .photo {
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 20px;
       border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    }}
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .photo img {
+      width: 200px;
+      height: 200px;
+      border-radius: 9999px;
+      border: 4px solid #3b82f6;
+    }
   </style>
 </head>
-<body class="text-white min-h-screen flex flex-col items-center pt-10">
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold tracking-wide">Espace personnel – RecovAI</h1>
-    <p class="text-blue-300 mt-2">Votre tableau de bord intelligent</p>
-  </header>
-
-  <main class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl w-full px-6">
-    <!-- Carte identité -->
-    <div class="bg-glass">
-      <h2 class="text-2xl font-semibold mb-4">Informations personnelles</h2>
-      <div class="flex items-center gap-4 mb-4">
-        <img src="photo_debiteur.png" alt="Photo du débiteur" class="w-20 h-20 rounded-full border-2 border-white shadow">
-        <div>
-          <p><strong>Nom :</strong> Thomas Martin</p>
-          <p><strong>Date de naissance :</strong> 12/04/1982</p>
-          <p><strong>Adresse :</strong> 23 rue de Paris, 75001 Paris</p>
-        </div>
-      </div>
-      <p><strong>Créancier :</strong> Mme Sylnevia</p>
-      <p><strong>Montant total :</strong> 5 000 €</p>
-      <p><strong>Solde restant :</strong> 3 000 €</p>
-      <p><strong>Statut :</strong> En cours</p>
-    </div>
-
-    <!-- Calendrier -->
-    <div class="bg-glass">
-      <h2 class="text-2xl font-semibold mb-4">Calendrier de paiements</h2>
-      <ul class="space-y-2">
-        <li>15/06/2025 – 1 000 € – <span class="text-yellow-300">À venir</span></li>
-        <li>15/05/2025 – 1 000 € – <span class="text-green-400">Payé</span></li>
-        <li>15/04/2025 – 1 000 € – <span class="text-green-400">Payé</span></li>
-      </ul>
-      <button class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        Effectuer un paiement
-      </button>
-    </div>
-
-    <!-- Liste des dettes -->
-    <div class="bg-glass col-span-2">
-      <h2 class="text-2xl font-semibold mb-4">Mes créanciers</h2>
-      <table class="w-full text-left table-auto bg-white text-black rounded">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2">Créancier</th>
-            <th class="px-4 py-2">Montant</th>
-            <th class="px-4 py-2">Statut</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="hover:bg-gray-50"><td class="px-4 py-2">American Express</td><td>2 150 €</td><td>En cours</td></tr>
-          <tr class="hover:bg-gray-50"><td class="px-4 py-2">EDF</td><td>342 €</td><td>En attente</td></tr>
-          <tr class="hover:bg-gray-50"><td class="px-4 py-2">SFR</td><td>121 €</td><td>Clôturé</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Documents -->
-    <div class="bg-glass">
-      <h2 class="text-2xl font-semibold mb-4">Transmettre un justificatif</h2>
-      <input type="file" class="text-black mb-4">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Envoyer
-      </button>
-    </div>
-
-    <!-- Contact gestionnaire -->
-    <div class="bg-glass">
-      <h2 class="text-2xl font-semibold mb-4">Votre gestionnaire</h2>
-      <p><strong>Nom :</strong> Mme Brigitte Lefèvre</p>
-      <p><strong>Email :</strong> b.lefevre@recovai.fr</p>
-      <p><strong>Téléphone :</strong> 01 23 45 67 89</p>
-      <textarea placeholder="Laisser un message..." class="w-full mt-4 p-2 rounded text-black"></textarea>
-      <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Envoyer au gestionnaire
-      </button>
-    </div>
-  </main>
-
-  <!-- Chatbot Milo -->
-  <div class="fixed bottom-4 right-4">
-    <img src="milo_chatbot.png" alt="Chatbot Milo" class="w-16 h-16 rounded-full shadow-lg cursor-pointer">
+<body>
+  <div class="photo">
+    <h2>Photo de l'Assistante IA</h2>
+    <img src="photo_femme_ia.png" alt="Assistante IA"/>
   </div>
 </body>
 </html>
 """
 
-# Sauvegarder le fichier HTML
-final_html_path = Path("/mnt/data/recovai_dashboard_pro.html")
-final_html_path.write_text(dashboard_html_pro, encoding="utf-8")
+test_file = Path("/mnt/data/test_affichage.html")
+test_file.write_text(test_affichage_html, encoding="utf-8")
 
-# Créer le ZIP final
-zip_path = Path("/mnt/data/RecovAI_DesignFinal.zip")
-with zipfile.ZipFile(zip_path, 'w') as zipf:
-    zipf.write(final_html_path, arcname="recovai_dashboard.html")
-    zipf.write("/mnt/data/photo_debiteur.png", arcname="photo_debiteur.png")
-    zipf.write("/mnt/data/milo_chatbot.png", arcname="milo_chatbot.png")
-    zipf.write("/mnt/data/fond_futuriste.png", arcname="fond_futuriste.png")
-
-zip_path.name
+test_file.name
