@@ -2,63 +2,63 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>RecovAI - Connexion</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>RecovAI - Connexion</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    .bg-overlay::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(3px);
-      z-index: 0;
+    body {
+      background-image: url('ocean_futuriste.jpg'); /* à remplacer par le bon chemin */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .fade-in {
+      animation: fadeIn 2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
-<body class="relative min-h-screen bg-black text-white font-sans overflow-hidden">
-
-  <!-- Image de fond -->
-  <div class="absolute inset-0 z-0">
-    <img src="https://cdn.openai.com/chatgpt/2023/bg-data-science.jpg" alt="Background"
-         class="object-cover w-full h-full opacity-90" />
-  </div>
-
-  <!-- Overlay -->
-  <div class="bg-overlay absolute inset-0"></div>
-
-  <!-- Contenu -->
-  <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-
-    <!-- Section gauche avec IA -->
-    <div class="flex items-center justify-center p-8">
-      <div class="text-center">
-        <img src="https://cdn.openai.com/chatgpt/2023/ai-femme-glasses.png" 
-             alt="IA souriante" 
-             class="w-72 h-72 object-cover rounded-full mx-auto border-4 border-white shadow-lg">
-        <h1 class="text-4xl font-bold mt-6">Bienvenue sur RecovAI</h1>
-        <p class="mt-2 text-gray-200 text-lg">Votre assistante IA de gestion des créances</p>
-      </div>
+<body class="min-h-screen flex flex-col justify-between text-white">
+  <!-- En-tête avec logo -->
+  <header class="flex items-center justify-between p-4 bg-black bg-opacity-50">
+    <div class="flex items-center space-x-4">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-12">
+      <h1 class="text-3xl font-bold">RecovAI</h1>
     </div>
+  </header>
 
-    <!-- Section droite : formulaire -->
-    <div class="flex items-center justify-center p-8">
-      <div class="w-full max-w-md bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-8 shadow-xl">
-        <h2 class="text-2xl font-bold text-center text-white mb-6">Connexion à l'espace personnel</h2>
-        <form>
-          <label class="block mb-4">
-            <span class="text-white">Identifiant</span>
-            <input type="text" placeholder="Entrez votre identifiant"
-                   class="mt-1 block w-full px-4 py-3 bg-white bg-opacity-20 border border-gray-300 rounded-md text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          </label>
-          <button type="submit"
-                  class="w-full mt-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300">
-            Se connecter
-          </button>
+  <!-- Section principale -->
+  <main class="flex flex-grow items-center justify-center">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 w-full max-w-6xl">
+      <!-- Zone de connexion -->
+      <div class="bg-gray-200 bg-opacity-90 text-black p-8 rounded-xl shadow-xl">
+        <h2 class="text-2xl font-bold mb-6">Connexion utilisateur</h2>
+        <form class="space-y-4">
+          <input type="email" placeholder="Email" class="w-full p-2 rounded border border-gray-300">
+          <input type="password" placeholder="Mot de passe" class="w-full p-2 rounded border border-gray-300">
+          <div class="flex justify-between">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Se connecter</button>
+            <button type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Créer un compte</button>
+          </div>
         </form>
+        <p class="mt-4 text-xs text-gray-700">Conforme RGPD - <a href="#" class="underline">Mentions légales</a></p>
+      </div>
+
+      <!-- Image IA -->
+      <div class="fade-in hidden md:block">
+        <img src="femme_IA.png" alt="Femme IA" class="w-full h-auto rounded-xl shadow-2xl">
       </div>
     </div>
+  </main>
 
-  </div>
+  <!-- Pied de page -->
+  <footer class="bg-black bg-opacity-60 text-center text-sm p-4">
+    <p>NeuroCred Solutions - 39 Rue des Innovateurs, 92110 Clichy, France</p>
+    <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
+    <p class="text-gray-400 mt-1">© 2025 RecovAI - Tous droits réservés</p>
+  </footer>
 </body>
 </html>
