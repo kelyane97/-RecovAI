@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accueil - RecovAI</title>
+  <title>Connexion - RecovAI</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
     body {
-      background: url('/mnt/data/dadc3fdb-b6fe-444b-b2c1-6629adb0ec82.png') no-repeat center center fixed;
+      background: url('/mnt/data/2bae6070-f912-41dd-9834-233a40a3df5f.png') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .fade-in {
-      animation: fadeIn 2s ease-in-out both;
+      animation: fadeIn 1.5s ease-in-out both;
     }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
@@ -20,39 +24,694 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col text-white">
-  <!-- En-tête -->
-  <header class="flex justify-between items-center p-4 bg-black bg-opacity-50">
-    <div class="flex items-center gap-4">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo" class="h-12">
-      <h1 class="text-3xl font-bold">RecovAI</h1>
-    </div>
-  </header>
-
-  <!-- Page d'accueil -->
-  <main class="flex-grow flex flex-col items-center justify-center text-center px-6 fade-in">
-    <img src="/mnt/data/c4cfdf5e-10b0-4b0e-99c1-bfd4b2770746.png" alt="Femme IA" class="w-60 md:w-80 rounded-full shadow-xl mb-6">
-    <h2 class="text-3xl md:text-4xl font-bold mb-2">Bienvenue sur <span class="text-blue-300">RecovAI</span></h2>
-    <p class="text-lg md:text-xl mb-6">Votre assistante IA de gestion des créances</p>
-    <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full text-lg transition">Se connecter</a>
-  </main>
-
-  <!-- Chatbot Milo -->
-  <div class="fixed bottom-4 right-4 w-72 fade-in">
-    <div class="bg-white rounded-xl shadow-xl p-3 flex items-start space-x-3 text-gray-800">
-      <img src="/mnt/data/9f4b0309-d30f-4d79-b16e-852376cf42f9.png" alt="Milo chatbot" class="h-12 w-12">
-      <div>
-        <p class="font-semibold">Milo</p>
-        <p class="text-sm">Bonjour ! Comment puis-je vous aider ?</p>
+<body class="flex flex-col justify-center items-center text-white min-h-screen">
+  <!-- Bloc de connexion -->
+  <div class="bg-white bg-opacity-90 text-black p-8 rounded-xl shadow-2xl w-full max-w-md fade-in">
+    <h2 class="text-2xl font-bold mb-6 text-center">Connexion utilisateur</h2>
+    <form class="space-y-4">
+      <input type="email" placeholder="Email" class="w-full p-2 rounded border border-gray-300">
+      <input type="password" placeholder="Mot de passe" class="w-full p-2 rounded border border-gray-300">
+      <div class="flex justify-between">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Se connecter</button>
+        <button type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Créer un compte</button>
       </div>
-    </div>
+    </form>
+    <p class="mt-4 text-xs text-gray-700">Conforme RGPD - <a href="#" class="underline">Mentions légales</a></p>
   </div>
 
-  <!-- Pied de page -->
-  <footer class="bg-black bg-opacity-60 text-center text-sm p-4">
+  <!-- Femme IA à droite -->
+  <div class="fixed bottom-12 right-6 hidden md:block fade-in">
+    <div class="flex flex-col items-center text-center">
+      <img src="/mnt/data/c4cfdf5e-10b0-4b0e-99c1-bfd4b2770746.png" alt="Femme IA" class="w-40 md:w-60 rounded-full shadow-lg">
+      <p class="mt-2 text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded-full">Bonjour ! Je suis votre assistante IA.</p>
+    </div>
+  </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil du débiteur - RecovAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans">
+  <header class="bg-blue-900 text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">RecovAI - Profil du débiteur</h1>
+    <a href="login.html" class="text-sm underline">Déconnexion</a>
+  </header>
+
+  <main class="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-md rounded-lg">
+    <div class="flex flex-col md:flex-row items-start gap-8">
+      <!-- Section photo et avatar -->
+      <div class="w-full md:w-1/3 text-center">
+        <img id="photo-profil" src="https://via.placeholder.com/150" alt="Photo de profil" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+        <input type="file" accept="image/*" class="block mx-auto mb-4 text-sm" onchange="previewImage(event)">
+        <label for="avatar-select" class="block text-left font-semibold">Choisir un avatar :</label>
+        <select id="avatar-select" class="w-full mt-1 border rounded p-2 text-sm">
+          <option value="">-- Sélectionner --</option>
+          <option value="europeen">Style européen</option>
+          <option value="africain">Style africain</option>
+          <option value="asiatique">Style asiatique</option>
+          <option value="latino">Style latino-américain</option>
+        </select>
+        <button onclick="changerAvatar()" class="mt-3 px-4 py-2 bg-blue-600 text-white rounded text-sm">Appliquer</button>
+      </div>
+
+      <!-- Infos personnelles -->
+      <div class="w-full md:w-2/3">
+        <h2 class="text-xl font-semibold mb-4">Informations personnelles</h2>
+        <form class="grid grid-cols-1 gap-4">
+          <input type="text" placeholder="Nom complet" class="p-2 border rounded">
+          <input type="email" placeholder="Email" class="p-2 border rounded">
+          <input type="tel" placeholder="Téléphone" class="p-2 border rounded">
+          <input type="text" placeholder="Adresse postale" class="p-2 border rounded">
+          <input type="text" placeholder="Montant dû (€)" class="p-2 border rounded">
+          <select class="p-2 border rounded">
+            <option>État du dossier</option>
+            <option value="en_attente">En attente</option>
+            <option value="en_traitement">En traitement</option>
+            <option value="cloture">Clôturé</option>
+          </select>
+          <button type="submit" class="mt-2 px-4 py-2 bg-green-600 text-white rounded">Enregistrer les modifications</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        document.getElementById('photo-profil').src = reader.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function changerAvatar() {
+      const avatar = document.getElementById('avatar-select').value;
+      const photo = document.getElementById('photo-profil');
+      switch (avatar) {
+        case 'europeen':
+          photo.src = 'avatar_europeen.png'; break;
+        case 'africain':
+          photo.src = 'avatar_africain.png'; break;
+        case 'asiatique':
+          photo.src = 'avatar_asiatique.png'; break;
+        case 'latino':
+          photo.src = 'avatar_latino.png'; break;
+        default:
+          break;
+      }
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil du débiteur - RecovAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
+      <h1 class="text-2xl font-bold">RecovAI</h1>
+    </div>
+    <span class="text-sm">Espace débiteur</span>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
+    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
+
+    <!-- Section Photo de profil -->
+    <div class="flex items-center space-x-6 mb-6">
+      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
+        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
+      </div>
+    </div>
+
+    <!-- Section Choix d'avatar -->
+    <div class="mb-6">
+      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
+      <select id="avatarOrigin" class="block w-full p-2 border border-gray-300 rounded">
+        <option value="">-- Sélectionnez --</option>
+        <option value="africain">Afrique (Homme/Femme)</option>
+        <option value="asiatique">Asie (Homme/Femme)</option>
+        <option value="europeen">Europe (Homme/Femme)</option>
+        <option value="amerique">Amérique (Homme/Femme)</option>
+        <option value="senior">Personne âgée</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+
+    <!-- Infos personnelles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm">Nom</label>
+        <input type="text" value="Dupont" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Prénom</label>
+        <input type="text" value="Jean" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Email</label>
+        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Téléphone</label>
+        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm">Adresse</label>
+        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Montant dû (€)</label>
+        <input type="text" value="450.00" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Statut du dossier</label>
+        <select class="w-full border rounded p-2">
+          <option value="attente">En attente</option>
+          <option value="relancé">Relancé</option>
+          <option value="réglé">Réglé</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-6 text-right">
+      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
+    </div>
+  </main>
+
+  <footer class="bg-blue-900 text-white text-center p-4 mt-10 text-sm">
     <p>NeuroCred Solutions - 39 Rue des Innovateurs, 92110 Clichy, France</p>
     <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
-    <p class="text-gray-400 mt-1">© 2025 RecovAI - Tous droits réservés</p>
+    <p class="text-gray-300">© 2025 RecovAI - Tous droits réservés</p>
+  </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil du débiteur - RecovAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    function updateAvatar() {
+      const select = document.getElementById('avatarOrigin');
+      const profilePic = document.getElementById('profilePic');
+      const value = select.value;
+      const base = '/mnt/data/';
+      const avatars = {
+        africain: 'avatar_africain_homme.jpg',
+        asiatique: 'avatar_asiatique_femme.jpg',
+        europeen: 'avatar_europeen_homme.jpg',
+        amerique: 'avatar_amerique_femme.jpg',
+        senior: 'avatar_senior_femme.jpg',
+        autre: 'avatar_generique.jpg'
+      };
+      if (avatars[value]) {
+        profilePic.src = base + avatars[value];
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
+      <h1 class="text-2xl font-bold">RecovAI</h1>
+    </div>
+    <span class="text-sm">Espace débiteur</span>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
+    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
+
+    <!-- Section Photo de profil -->
+    <div class="flex items-center space-x-6 mb-6">
+      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
+        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
+      </div>
+    </div>
+
+    <!-- Section Choix d'avatar -->
+    <div class="mb-6">
+      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
+      <select id="avatarOrigin" onchange="updateAvatar()" class="block w-full p-2 border border-gray-300 rounded">
+        <option value="">-- Sélectionnez --</option>
+        <option value="africain">Afrique (Homme/Femme)</option>
+        <option value="asiatique">Asie (Homme/Femme)</option>
+        <option value="europeen">Europe (Homme/Femme)</option>
+        <option value="amerique">Amérique (Homme/Femme)</option>
+        <option value="senior">Personne âgée</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+
+    <!-- Infos personnelles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm">Nom</label>
+        <input type="text" value="Dupont" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Prénom</label>
+        <input type="text" value="Jean" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Email</label>
+        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Téléphone</label>
+        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm">Adresse</label>
+        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Montant dû (€)</label>
+        <input type="text" value="450.00" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Statut du dossier</label>
+        <select class="w-full border rounded p-2">
+          <option value="attente">En attente</option>
+          <option value="relancé">Relancé</option>
+          <option value="réglé">Réglé</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-6 text-right">
+      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
+    </div>
+  </main>
+
+  <footer class="bg-blue-900 text-white text-center p-4 mt-10 text-sm">
+    <p>NeuroCred Solutions - 39 Rue des Innovateurs, 92110 Clichy, France</p>
+    <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
+    <p class="text-gray-300">© 2025 RecovAI - Tous droits réservés</p>
+  </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil du débiteur - RecovAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    function updateAvatar() {
+      const select = document.getElementById('avatarOrigin');
+      const profilePic = document.getElementById('profilePic');
+      const value = select.value;
+      const base = '/mnt/data/';
+      const avatars = {
+        africain: 'A_digital_photograph_features_a_portrait_of_a_youn.png',
+        africain_femme: 'A_digital_photograph_headshot_features_a_young_Afr.png',
+        asiatique: 'A_digital_photograph_portrait_features_a_young_Eas.png',
+        asiatique_femme: 'A_high-resolution_digital_photograph_features_a_lo.png',
+        europeen: 'A_high-resolution_digital_photograph_features_a_Ca.png',
+        europeenne: 'A_high-resolution_digital_photograph_features_a_po.png',
+        amerique: 'avatar_amerique_femme.jpg',
+        senior: 'avatar_senior_femme.jpg',
+        autre: 'avatar_generique.jpg'
+      };
+      if (avatars[value]) {
+        profilePic.src = base + avatars[value];
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
+      <h1 class="text-2xl font-bold">RecovAI</h1>
+    </div>
+    <span class="text-sm">Espace débiteur</span>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
+    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
+
+    <!-- Section Photo de profil -->
+    <div class="flex items-center space-x-6 mb-6">
+      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
+        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
+      </div>
+    </div>
+
+    <!-- Section Choix d'avatar -->
+    <div class="mb-6">
+      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
+      <select id="avatarOrigin" onchange="updateAvatar()" class="block w-full p-2 border border-gray-300 rounded">
+        <option value="">-- Sélectionnez --</option>
+        <option value="africain">Afrique (Homme)</option>
+        <option value="africain_femme">Afrique (Femme)</option>
+        <option value="asiatique">Asie (Homme)</option>
+        <option value="asiatique_femme">Asie (Femme)</option>
+        <option value="europeen">Europe (Homme)</option>
+        <option value="europeenne">Europe (Femme)</option>
+        <option value="amerique">Amérique (Femme)</option>
+        <option value="senior">Personne âgée</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+
+    <!-- Infos personnelles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm">Nom</label>
+        <input type="text" value="Dupont" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Prénom</label>
+        <input type="text" value="Jean" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Email</label>
+        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Téléphone</label>
+        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm">Adresse</label>
+        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Montant dû (€)</label>
+        <input type="text" value="450.00" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Statut du dossier</label>
+        <select class="w-full border rounded p-2">
+          <option value="attente">En attente</option>
+          <option value="relancé">Relancé</option>
+          <option value="réglé">Réglé</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-6 text-right">
+      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
+    </div>
+  </main>
+
+  <footer class="bg-blue-900 text-white text-center p-4 mt-10 text-sm">
+    <p>NeuroCred Solutions - 39 Rue des Innovateurs, 92110 Clichy, France</p>
+    <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
+    <p class="text-gray-300">© 2025 RecovAI - Tous droits réservés</p>
+  </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil du débiteur - RecovAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    function updateAvatar() {
+      const select = document.getElementById('avatarOrigin');
+      const profilePic = document.getElementById('profilePic');
+      const value = select.value;
+      const base = '/mnt/data/';
+      const avatars = {
+        africain: 'A_digital_photograph_features_a_portrait_of_a_youn.png',
+        africain_femme: 'A_digital_photograph_headshot_features_a_young_Afr.png',
+        asiatique: 'A_digital_photograph_portrait_features_a_young_Eas.png',
+        asiatique_femme: 'A_high-resolution_digital_photograph_features_a_lo.png',
+        europeen: 'A_high-resolution_digital_photograph_features_a_Ca.png',
+        europeenne: 'A_high-resolution_digital_photograph_features_a_po.png',
+        amerique: 'avatar_amerique_femme.jpg',
+        senior: 'avatar_senior_femme.jpg',
+        autre: 'avatar_generique.jpg'
+      };
+      if (avatars[value]) {
+        profilePic.src = base + avatars[value];
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
+      <h1 class="text-2xl font-bold">RecovAI</h1>
+    </div>
+    <span class="text-sm">Espace débiteur</span>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
+    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
+
+    <!-- Section Photo de profil -->
+    <div class="flex items-center space-x-6 mb-6">
+      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
+        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
+      </div>
+    </div>
+
+    <!-- Section Choix d'avatar -->
+    <div class="mb-6">
+      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
+      <select id="avatarOrigin" onchange="updateAvatar()" class="block w-full p-2 border border-gray-300 rounded">
+        <option value="">-- Sélectionnez --</option>
+        <option value="africain">Afrique (Homme)</option>
+        <option value="africain_femme">Afrique (Femme)</option>
+        <option value="asiatique">Asie (Homme)</option>
+        <option value="asiatique_femme">Asie (Femme)</option>
+        <option value="europeen">Europe (Homme)</option>
+        <option value="europeenne">Europe (Femme)</option>
+        <option value="amerique">Amérique (Femme)</option>
+        <option value="senior">Personne âgée</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+
+    <!-- Infos personnelles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm">Nom</label>
+        <input type="text" value="Dupont" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Prénom</label>
+        <input type="text" value="Jean" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Email</label>
+        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Téléphone</label>
+        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm">Adresse</label>
+        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Montant dû (€)</label>
+        <input type="text" value="450.00" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Statut du dossier</label>
+        <select class="w-full border rounded p-2">
+          <option value="attente">En attente</option>
+          <option value="relancé">Relancé</option>
+          <option value="réglé">Réglé</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-6 text-right">
+      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
+    </div>
+  </main>
+
+  <footer class="bg-gray-800 text-white text-center py-6 mt-10 text-sm">
+    <div class="flex justify-center mb-2">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo de l'entreprise" class="h-10">
+    </div>
+    <p class="font-semibold">NeuroCred Solutions</p>
+    <p>39 Rue des Innovateurs, 92110 Clichy, France</p>
+    <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
+    <p class="text-gray-400 mt-2">© 2025 RecovAI - Tous droits réservés</p>
+  </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil du débiteur - RecovAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    function updateAvatar() {
+      const select = document.getElementById('avatarOrigin');
+      const profilePic = document.getElementById('profilePic');
+      const value = select.value;
+      const base = '/mnt/data/';
+      const avatars = {
+        africain: 'A_digital_photograph_features_a_portrait_of_a_youn.png',
+        africain_femme: 'A_digital_photograph_headshot_features_a_young_Afr.png',
+        asiatique: 'A_digital_photograph_portrait_features_a_young_Eas.png',
+        asiatique_femme: 'A_high-resolution_digital_photograph_features_a_lo.png',
+        europeen: 'A_high-resolution_digital_photograph_features_a_Ca.png',
+        europeenne: 'A_high-resolution_digital_photograph_features_a_po.png',
+        amerique: 'avatar_amerique_femme.jpg',
+        senior: 'avatar_senior_femme.jpg',
+        autre: 'avatar_generique.jpg'
+      };
+      if (avatars[value]) {
+        profilePic.src = base + avatars[value];
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
+      <h1 class="text-2xl font-bold">RecovAI</h1>
+    </div>
+    <span class="text-sm">Espace débiteur</span>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
+    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
+
+    <!-- Section Photo de profil -->
+    <div class="flex items-center space-x-6 mb-6">
+      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
+        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
+      </div>
+    </div>
+
+    <!-- Section Choix d'avatar -->
+    <div class="mb-6">
+      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
+      <select id="avatarOrigin" onchange="updateAvatar()" class="block w-full p-2 border border-gray-300 rounded">
+        <option value="">-- Sélectionnez --</option>
+        <option value="africain">Afrique (Homme)</option>
+        <option value="africain_femme">Afrique (Femme)</option>
+        <option value="asiatique">Asie (Homme)</option>
+        <option value="asiatique_femme">Asie (Femme)</option>
+        <option value="europeen">Europe (Homme)</option>
+        <option value="europeenne">Europe (Femme)</option>
+        <option value="amerique">Amérique (Femme)</option>
+        <option value="senior">Personne âgée</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+
+    <!-- Infos personnelles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm">Nom</label>
+        <input type="text" value="Dupont" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Prénom</label>
+        <input type="text" value="Jean" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Email</label>
+        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Téléphone</label>
+        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm">Adresse</label>
+        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Montant dû (€)</label>
+        <input type="text" value="450.00" class="w-full border rounded p-2">
+      </div>
+      <div>
+        <label class="block text-sm">Statut du dossier</label>
+        <select class="w-full border rounded p-2">
+          <option value="attente">En attente</option>
+          <option value="relancé">Relancé</option>
+          <option value="réglé">Réglé</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-6 text-right">
+      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
+    </div>
+  </main>
+
+  <footer class="bg-gray-800 text-white text-center py-6 mt-10 text-sm">
+    <div class="flex justify-center mb-2">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo de l'entreprise" class="h-10">
+    </div>
+    <p class="font-semibold">NeuroCred Solutions</p>
+    <p>39 Rue des I
+      <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentions Légales - RecovAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+  <header class="bg-blue-900 text-white p-4">
+    <h1 class="text-xl font-bold">Mentions Légales</h1>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 bg-white shadow mt-6 rounded">
+    <h2 class="text-lg font-semibold mb-4">Informations légales</h2>
+    <p><strong>Nom de l’entreprise :</strong> NeuroCred Solutions</p>
+    <p><strong>Adresse :</strong> 39 Rue des Innovateurs, 92110 Clichy, France</p>
+    <p><strong>Téléphone :</strong> +33 1 84 25 73 00</p>
+    <p><strong>Email :</strong> contact@neurocred.fr</p>
+    <p><strong>Numéro SIRET :</strong> 891 234 567 00014</p>
+    <p><strong>Directeur de publication :</strong> Mme Kelyane Dupuis</p>
+    <p><strong>Hébergeur :</strong> OVH - 2 rue Kellermann, 59100 Roubaix, France</p>
+  </main>
+
+  <footer class="text-center text-sm text-gray-500 mt-10 py-4">
+    <p>© 2025 RecovAI - Tous droits réservés</p>
+    <a href="index.html" class="text-blue-500 underline">Retour à l'accueil</a>
   </footer>
 </body>
 </html>
