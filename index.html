@@ -3,56 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RecovAI - Connexion</title>
+  <title>Accueil - RecovAI</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      background-image: url('/mnt/data/dadc3fdb-b6fe-444b-b2c1-6629adb0ec82.png'); /* océan futuriste */
+      background: url('/mnt/data/dadc3fdb-b6fe-444b-b2c1-6629adb0ec82.png') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .fade-in {
-      animation: fadeIn 2s ease-in-out;
+      animation: fadeIn 2s ease-in-out both;
     }
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between text-white">
-  <!-- En-tête avec logo -->
-  <header class="flex items-center justify-between p-4 bg-black bg-opacity-50">
-    <div class="flex items-center space-x-4">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-12">
+<body class="min-h-screen flex flex-col text-white">
+  <!-- En-tête -->
+  <header class="flex justify-between items-center p-4 bg-black bg-opacity-50">
+    <div class="flex items-center gap-4">
+      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo" class="h-12">
       <h1 class="text-3xl font-bold">RecovAI</h1>
     </div>
   </header>
 
-  <!-- Section principale -->
-  <main class="flex flex-grow items-center justify-center">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 w-full max-w-6xl">
-      <!-- Zone de connexion -->
-      <div class="bg-gray-200 bg-opacity-90 text-black p-8 rounded-xl shadow-xl">
-        <h2 class="text-2xl font-bold mb-6">Connexion utilisateur</h2>
-        <form class="space-y-4">
-          <input type="email" placeholder="Email" class="w-full p-2 rounded border border-gray-300">
-          <input type="password" placeholder="Mot de passe" class="w-full p-2 rounded border border-gray-300">
-          <div class="flex justify-between">
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Se connecter</button>
-            <button type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Créer un compte</button>
-          </div>
-        </form>
-        <p class="mt-4 text-xs text-gray-700">Conforme RGPD - <a href="#" class="underline">Mentions légales</a></p>
-      </div>
+  <!-- Page d'accueil -->
+  <main class="flex-grow flex flex-col items-center justify-center text-center px-6 fade-in">
+    <img src="/mnt/data/c4cfdf5e-10b0-4b0e-99c1-bfd4b2770746.png" alt="Femme IA" class="w-60 md:w-80 rounded-full shadow-xl mb-6">
+    <h2 class="text-3xl md:text-4xl font-bold mb-2">Bienvenue sur <span class="text-blue-300">RecovAI</span></h2>
+    <p class="text-lg md:text-xl mb-6">Votre assistante IA de gestion des créances</p>
+    <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full text-lg transition">Se connecter</a>
+  </main>
 
-      <!-- Image IA -->
-      <div class="fade-in hidden md:block">
-        <img src="/mnt/data/c4cfdf5e-10b0-4b0e-99c1-bfd4b2770746.png" alt="Femme IA" class="w-full h-auto rounded-xl shadow-2xl">
+  <!-- Chatbot Milo -->
+  <div class="fixed bottom-4 right-4 w-72 fade-in">
+    <div class="bg-white rounded-xl shadow-xl p-3 flex items-start space-x-3 text-gray-800">
+      <img src="/mnt/data/9f4b0309-d30f-4d79-b16e-852376cf42f9.png" alt="Milo chatbot" class="h-12 w-12">
+      <div>
+        <p class="font-semibold">Milo</p>
+        <p class="text-sm">Bonjour ! Comment puis-je vous aider ?</p>
       </div>
     </div>
-  </main>
+  </div>
 
   <!-- Pied de page -->
   <footer class="bg-black bg-opacity-60 text-center text-sm p-4">
