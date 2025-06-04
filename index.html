@@ -1,77 +1,71 @@
 from pathlib import Path
 
-# Définir le chemin du fichier à créer
-output_path = Path("/mnt/data/RecovAI_complet.html")
-
-# Contenu HTML complet à écrire dans le fichier
-html_content = """<!DOCTYPE html>
+# HTML complet prêt à coller dans DeepSite avec fond et IA
+html_code = """
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecovAI - Assistant IA</title>
+    <title>RecovAI - Connexion</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-image: url('https://cdn.pixabay.com/photo/2020/12/15/10/46/network-5837089_1280.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 100vh;
+        .chat-bubble {
+            position: relative;
+            border-radius: 1rem;
+        }
+        .chat-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #3b82f6;
+            border-bottom: 0;
+            border-right: 0;
+            margin-left: -10px;
+            margin-bottom: -10px;
         }
     </style>
 </head>
-<body class="flex items-center justify-center p-6">
+<body class="min-h-screen bg-cover bg-center text-white font-sans" style="background-image: url('fond.png');">
+    <div id="login-page" class="flex flex-col md:flex-row items-center justify-center min-h-screen bg-black bg-opacity-50 p-6">
+        
+        <!-- IA souriante -->
+        <div class="md:w-1/2 p-4 flex justify-center">
+            <img src="ia.png" alt="IA accueillante"
+                 class="w-[300px] h-[300px] object-cover rounded-full border-4 border-blue-400 shadow-xl">
+        </div>
 
-    <!-- Page de Connexion -->
-    <div id="login-card" class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md text-center space-y-6">
-        <div class="w-32 h-32 rounded-full overflow-hidden mx-auto shadow-md">
-            <img src="https://cdn.dribbble.com/users/1486703/screenshots/14540321/media/b3a1e022c2e6d1f0fb8c4fafefafb33b.png" alt="IA Accueil" class="w-full h-full object-cover">
-        </div>
-        <h1 class="text-2xl font-bold text-gray-800">Bienvenue sur <span class="text-blue-600">RecovAI</span></h1>
-        <p class="text-gray-600">Bonjour, je suis votre assistante virtuelle. Veuillez entrer votre identifiant pour accéder à votre espace personnel.</p>
-        <form id="login-form" class="space-y-4">
-            <input type="text" placeholder="Votre identifiant" class="w-full px-4 py-2 border rounded-lg" required>
-            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Se connecter</button>
-        </form>
-    </div>
+        <!-- Formulaire -->
+        <div class="md:w-1/2 max-w-md w-full bg-gray-800 bg-opacity-80 rounded-xl p-8 shadow-lg">
+            <h1 class="text-3xl font-bold text-center text-white mb-2">RecovAI</h1>
+            <p class="text-center text-gray-300 mb-4">Bienvenue sur votre assistant intelligent de recouvrement.</p>
+            
+            <div class="bg-blue-500 text-white p-4 rounded-lg chat-bubble mb-4">
+                Veuillez entrer votre identifiant pour accéder à votre espace personnel.
+            </div>
 
-    <!-- Tableau de bord -->
-    <div id="dashboard-card" class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md text-left hidden space-y-4">
-        <div class="w-24 h-24 rounded-full overflow-hidden mx-auto shadow-md">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Photo débiteur" class="w-full h-full object-cover">
-        </div>
-        <h2 class="text-xl font-bold text-center">Espace personnel de Thomas Martin</h2>
-        <p class="text-center text-sm text-gray-500 mb-4">Status : En cours de règlement</p>
-        <div>
-            <h3 class="font-semibold text-gray-700">Informations</h3>
-            <p><strong>N° Dossier :</strong> 2025-01478</p>
-            <p><strong>Date de naissance :</strong> 02/04/1985</p>
-            <p><strong>Lieu de naissance :</strong> Paris</p>
-            <p><strong>Email :</strong> t.martin@example.com</p>
-            <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
-        </div>
-        <div>
-            <h3 class="font-semibold text-gray-700">Adresse & SIRET</h3>
-            <p><strong>Adresse :</strong> 123 rue de Paris, 75000</p>
-            <p><strong>N° SIRET :</strong> 81234567800012</p>
+            <form id="login-form">
+                <label for="user-id" class="block mb-2 text-sm font-medium text-white">Identifiant</label>
+                <input type="text" id="user-id"
+                       class="w-full px-4 py-2 mb-4 bg-gray-700 border border-gray-600 rounded-lg focus:ring-blue-500 focus:outline-none"
+                       placeholder="Entrez votre identifiant" required>
+                <button type="submit"
+                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2 rounded-lg">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Se connecter
+                </button>
+            </form>
         </div>
     </div>
-
-    <script>
-        document.getElementById("login-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            document.getElementById("login-card").classList.add("hidden");
-            document.getElementById("dashboard-card").classList.remove("hidden");
-        });
-    </script>
-
 </body>
 </html>
 """
 
-# Écriture du fichier HTML
-output_path.write_text(html_content, encoding="utf-8")
-
-# Retourner le chemin du fichier pour téléchargement
-output_path.name
+# Sauvegarde
+file_path = Path("/mnt/data/recovai_login_complet.html")
+file_path.write_text(html_code, encoding="utf-8")
+file_path.name
