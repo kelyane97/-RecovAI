@@ -1,71 +1,64 @@
-from pathlib import Path
-
-# HTML complet prêt à coller dans DeepSite avec fond et IA
-html_code = """
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecovAI - Connexion</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .chat-bubble {
-            position: relative;
-            border-radius: 1rem;
-        }
-        .chat-bubble:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 20%;
-            width: 0;
-            height: 0;
-            border: 10px solid transparent;
-            border-top-color: #3b82f6;
-            border-bottom: 0;
-            border-right: 0;
-            margin-left: -10px;
-            margin-bottom: -10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>RecovAI - Connexion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .bg-overlay::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 0;
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-cover bg-center text-white font-sans" style="background-image: url('fond.png');">
-    <div id="login-page" class="flex flex-col md:flex-row items-center justify-center min-h-screen bg-black bg-opacity-50 p-6">
-        
-        <!-- IA souriante -->
-        <div class="md:w-1/2 p-4 flex justify-center">
-            <img src="ia.png" alt="IA accueillante"
-                 class="w-[300px] h-[300px] object-cover rounded-full border-4 border-blue-400 shadow-xl">
-        </div>
+<body class="relative min-h-screen bg-black text-white font-sans overflow-hidden">
 
-        <!-- Formulaire -->
-        <div class="md:w-1/2 max-w-md w-full bg-gray-800 bg-opacity-80 rounded-xl p-8 shadow-lg">
-            <h1 class="text-3xl font-bold text-center text-white mb-2">RecovAI</h1>
-            <p class="text-center text-gray-300 mb-4">Bienvenue sur votre assistant intelligent de recouvrement.</p>
-            
-            <div class="bg-blue-500 text-white p-4 rounded-lg chat-bubble mb-4">
-                Veuillez entrer votre identifiant pour accéder à votre espace personnel.
-            </div>
+  <!-- Image de fond -->
+  <div class="absolute inset-0 z-0">
+    <img src="https://cdn.openai.com/chatgpt/2023/bg-data-science.jpg" alt="Background"
+         class="object-cover w-full h-full opacity-90" />
+  </div>
 
-            <form id="login-form">
-                <label for="user-id" class="block mb-2 text-sm font-medium text-white">Identifiant</label>
-                <input type="text" id="user-id"
-                       class="w-full px-4 py-2 mb-4 bg-gray-700 border border-gray-600 rounded-lg focus:ring-blue-500 focus:outline-none"
-                       placeholder="Entrez votre identifiant" required>
-                <button type="submit"
-                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2 rounded-lg">
-                    <i class="fas fa-sign-in-alt mr-2"></i> Se connecter
-                </button>
-            </form>
-        </div>
+  <!-- Overlay -->
+  <div class="bg-overlay absolute inset-0"></div>
+
+  <!-- Contenu -->
+  <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+
+    <!-- Section gauche avec IA -->
+    <div class="flex items-center justify-center p-8">
+      <div class="text-center">
+        <img src="https://cdn.openai.com/chatgpt/2023/ai-femme-glasses.png" 
+             alt="IA souriante" 
+             class="w-72 h-72 object-cover rounded-full mx-auto border-4 border-white shadow-lg">
+        <h1 class="text-4xl font-bold mt-6">Bienvenue sur RecovAI</h1>
+        <p class="mt-2 text-gray-200 text-lg">Votre assistante IA de gestion des créances</p>
+      </div>
     </div>
+
+    <!-- Section droite : formulaire -->
+    <div class="flex items-center justify-center p-8">
+      <div class="w-full max-w-md bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-8 shadow-xl">
+        <h2 class="text-2xl font-bold text-center text-white mb-6">Connexion à l'espace personnel</h2>
+        <form>
+          <label class="block mb-4">
+            <span class="text-white">Identifiant</span>
+            <input type="text" placeholder="Entrez votre identifiant"
+                   class="mt-1 block w-full px-4 py-3 bg-white bg-opacity-20 border border-gray-300 rounded-md text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </label>
+          <button type="submit"
+                  class="w-full mt-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300">
+            Se connecter
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
 </body>
 </html>
-"""
-
-# Sauvegarde
-file_path = Path("/mnt/data/recovai_login_complet.html")
-file_path.write_text(html_code, encoding="utf-8")
-file_path.name
