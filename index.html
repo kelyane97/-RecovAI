@@ -1,122 +1,167 @@
-index.html
-<section class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-  <div class="max-w-md w-full bg-white shadow-lg rounded-xl p-6 space-y-4">
-    <div class="flex items-center space-x-3">
-      <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl animate-pulse">
-        🤖
+index_html = """
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RecovAI Accueil</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('fond_futuriste.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(3px);
+    }
+    .card {
+      background: rgba(255,255,255,0.9);
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    img {
+      width: 150px;
+      height: 150px;
+      border-radius: 9999px;
+      border: 4px solid #3B82F6;
+      margin-bottom: 1rem;
+    }
+    button {
+      background-color: #3B82F6;
+      color: white;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    input {
+      padding: 0.5rem;
+      margin-top: 1rem;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="photo_femme_ia.png" alt="Assistante IA">
+    <h1>Bienvenue sur RecovAI</h1>
+    <p>Bonjour, je suis votre assistante virtuelle. Veuillez entrer votre identifiant pour accéder à votre espace personnel.</p>
+    <input type="text" placeholder="Votre identifiant" />
+    <br><br>
+    <a href="dashboard.html"><button>Se connecter</button></a>
+  </div>
+  <script>
+    const message = new SpeechSynthesisUtterance("Bienvenue sur RecovAI. Veuillez entrer votre identifiant pour accéder à votre espace personnel.");
+    message.lang = "fr-FR";
+    window.speechSynthesis.speak(message);
+  </script>
+</body>
+</html>
+"""
+
+dashboard_html = """
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord - RecovAI</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: url('fond_futuriste.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      backdrop-filter: blur(2px);
+      color: #333;
+    }
+    .container {
+      background: rgba(255,255,255,0.95);
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 960px;
+      margin: auto;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    img {
+      width: 120px;
+      height: 120px;
+      border-radius: 9999px;
+      border: 3px solid #3B82F6;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .section {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="section" style="text-align:center">
+      <img src="photo_debiteur_final.png" alt="Photo débiteur">
+      <h2>Espace personnel de Thomas Martin</h2>
+      <p>Status : En cours de règlement</p>
+    </div>
+    <div class="grid section">
+      <div>
+        <h3>Informations</h3>
+        <p><strong>N° Dossier :</strong> 2025-01478</p>
+        <p><strong>Date de naissance :</strong> 02/04/1985</p>
+        <p><strong>Lieu de naissance :</strong> Paris</p>
+        <p><strong>Email :</strong> t.martin@example.com</p>
+        <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
       </div>
       <div>
-        <h2 class="text-xl font-semibold">Mira</h2>
-        <p class="text-sm text-gray-500">Assistant IA RecovAI</p>
+        <h3>Adresse & SIRET</h3>
+        <p><strong>Adresse :</strong> 123 rue de Paris, 75000</p>
+        <p><strong>Pays :</strong> France</p>
+        <p><strong>N° SIRET :</strong> 81234567800012</p>
       </div>
     </div>
-
-    <div id="chatBox" class="bg-gray-50 rounded-md p-4 h-48 overflow-y-auto text-sm space-y-2 border border-gray-200">
-      <div class="text-right text-blue-700">👩‍💼 Client : Bonjour, quel est mon solde ?</div>
-      <div id="iaTyping" class="text-left text-gray-600 italic">🤖 Mira réfléchit...</div>
-    </div>
-
-    <div class="mt-4">
-      <input type="text" placeholder="Posez une question..." class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:border-blue-400" disabled>
-    </div>
-  </div>
-</section>
-
-<script>
-  setTimeout(() => {
-    const typing = document.getElementById("iaTyping");
-    typing.classList.remove("italic", "text-gray-600");
-    typing.innerHTML = "🤖 Mira : Après vérification, votre solde est de <strong>1 537,42 €</strong>. Souhaitez-vous planifier un paiement ?";
-  }, 2000);
-</script> 
-<section class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-  <div class="max-w-md w-full bg-white shadow-xl rounded-xl p-6 space-y-4 animate-fade-in">
-    <div class="flex items-center space-x-3">
-      <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl animate-pulse">
-        🤖
+    <div class="grid section">
+      <div>
+        <h3>Créances</h3>
+        <ul>
+          <li>EDF : 342 €</li>
+          <li>Orange : 489 €</li>
+          <li>SFR : 121 €</li>
+        </ul>
+        <p><strong>Total :</strong> 5 000 €</p>
+        <p><strong>Reste à payer :</strong> 3 000 €</p>
       </div>
       <div>
-        <h2 class="text-xl font-semibold">Mira</h2>
-        <p class="text-sm text-gray-500">Assistant IA RecovAI</p>
+        <h3>Calendrier</h3>
+        <p>15/06/2025 – 1000 € – à venir</p>
+        <p>15/05/2025 – 1000 € – payé</p>
+        <p>15/04/2025 – 1000 € – payé</p>
       </div>
     </div>
-
-    <div id="chatBox" class="bg-gray-50 rounded-md p-4 h-56 overflow-y-auto text-sm space-y-3 border border-gray-200">
-      <div class="text-right text-blue-700">👩‍💼 Client : Bonjour, quel est mon solde ?</div>
-      <div id="iaTyping1" class="text-left text-gray-600 italic">🤖 Mira réfléchit...</div>
-    </div>
-
-    <form onsubmit="return false;" class="flex items-center space-x-2 mt-4">
-      <input type="text" disabled placeholder="Fonction bientôt disponible..." class="flex-1 border border-gray-300 rounded-md p-2 bg-gray-100 text-sm text-gray-500" />
-      <button disabled class="bg-blue-400 text-white px-4 py-2 rounded opacity-60 cursor-not-allowed">Répondre</button>
-    </form>
   </div>
-</section>
+</body>
+</html>
+"""
 
-<!-- Fade-in animation -->
-<style>
-  .animate-fade-in {
-    animation: fadeIn 1.2s ease-in-out;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-</style>
+# Enregistrer les fichiers
+index_file = Path("/mnt/data/index.html")
+dashboard_file = Path("/mnt/data/dashboard.html")
+index_file.write_text(index_html, encoding="utf-8")
+dashboard_file.write_text(dashboard_html, encoding="utf-8")
 
-<script>
-  // Première réponse
-  setTimeout(() => {
-    const iaTyping1 = document.getElementById("iaTyping1");
-    iaTyping1.classList.remove("italic", "text-gray-600");
-    iaTyping1.innerHTML = "🤖 Mira : Après vérification, votre solde est de <strong>1 537,42 €</strong>.";
-
-    // Deuxième échange simulé
-    const chatBox = document.getElementById("chatBox");
-    const question2 = document.createElement("div");
-    question2.className = "text-right text-blue-700";
-    question2.textContent = "👩‍💼 Client : Puis-je le payer en plusieurs fois ?";
-    chatBox.appendChild(question2);
-
-    const typing2 = document.createElement("div");
-    typing2.id = "iaTyping2";
-    typing2.className = "text-left text-gray-600 italic";
-    typing2.textContent = "🤖 Mira réfléchit...";
-    chatBox.appendChild(typing2);
-
-    // Réponse après délai
-    setTimeout(() => {
-      typing2.classList.remove("italic", "text-gray-600");
-      typing2.innerHTML = "🤖 Mira : Bien sûr. Je peux vous proposer un échéancier en 3 fois sans frais. Souhaitez-vous que je vous l’envoie par mail ?";
-    }, 1800);
-
-  }, 2000);
-</script>
-<!-- Ligne de séparation -->
-<hr class="my-8 border-gray-300 w-full max-w-md" />
-
-<!-- Première version de Mira (conservée en bas) -->
-<section class="max-w-md w-full bg-white shadow-md rounded-xl p-6 space-y-4 mb-10">
-  <div class="flex items-center space-x-3">
-    <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white text-lg">
-      🤖
-    </div>
-    <div>
-      <h3 class="text-lg font-semibold">Mira (mode classique)</h3>
-      <p class="text-xs text-gray-500">Assistant IA de RecovAI</p>
-    </div>
-  </div>
-
-  <div class="bg-gray-50 rounded-md p-4 text-sm border border-gray-200">
-    <p class="text-right text-blue-700">👩‍💼 Client : Bonjour, quel est mon solde ?</p>
-    <p class="text-left text-gray-800 mt-2">🤖 Mira : Votre solde est de <strong>1 537,42 €</strong>.</p>
-  </div>
-</section>
-
-<!-- Bouton Retour -->
-<div class="text-center mb-10">
-  <a href="../index.html" class="inline-block bg-gray-700 text-white px-5 py-2 rounded-full hover:bg-gray-900 transition">
-    ← Retour à l'accueil
-  </a>
-</div>
-
+index_file.name, dashboard_file.name
