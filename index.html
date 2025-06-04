@@ -1,167 +1,711 @@
-index_html = """
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RecovAI Accueil</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: url('fond_futuriste.png') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Segoe UI', sans-serif;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(3px);
-    }
-    .card {
-      background: rgba(255,255,255,0.9);
-      padding: 2rem;
-      border-radius: 1rem;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    img {
-      width: 150px;
-      height: 150px;
-      border-radius: 9999px;
-      border: 4px solid #3B82F6;
-      margin-bottom: 1rem;
-    }
-    button {
-      background-color: #3B82F6;
-      color: white;
-      padding: 0.75rem 2rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
-    input {
-      padding: 0.5rem;
-      margin-top: 1rem;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 0.5rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecovAI - Votre assistant de gestion des créances</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-element {
+            animation: floating 6s ease-in-out infinite;
+        }
+        .d.data-bg {
+    background: url('https://tonlienoucheminversimage.com/futur_bg_data.png') center/cover no-repeat;
+}
+
+        }
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+        .chat-bubble {
+            position: relative;
+            border-radius: 1rem;
+        }
+        .chat-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #3b82f6;
+            border-bottom: 0;
+            border-right: 0;
+            margin-left: -10px;
+            margin-bottom: -10px;
+        }
+        #voice-message {
+            visibility: hidden;
+        }
+    </style>
 </head>
-<body>
-  <div class="card">
-    <img src="photo_femme_ia.png" alt="Assistante IA">
-    <h1>Bienvenue sur RecovAI</h1>
-    <p>Bonjour, je suis votre assistante virtuelle. Veuillez entrer votre identifiant pour accéder à votre espace personnel.</p>
-    <input type="text" placeholder="Votre identifiant" />
-    <br><br>
-    <a href="dashboard.html"><button>Se connecter</button></a>
-  </div>
-  <script>
-    const message = new SpeechSynthesisUtterance("Bienvenue sur RecovAI. Veuillez entrer votre identifiant pour accéder à votre espace personnel.");
-    message.lang = "fr-FR";
-    window.speechSynthesis.speak(message);
-  </script>
+<body class="bg-gray-900 text-white min-h-screen font-sans">
+    <!-- Page de connexion -->
+    <div id="login-page" class="flex flex-col items-center justify-center min-h-screen p-4 data-bg relative overflow-hidden">
+        <!-- Effets visuels -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full glow-effect floating-element" style="animation-delay: 0s;"></div>
+            <div class="absolute top-1/3 right-1/3 w-3 h-3 bg-purple-400 rounded-full glow-effect floating-element" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-2 h-2 bg-cyan-400 rounded-full glow-effect floating-element" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-1/3 left-1/3 w-3 h-3 bg-indigo-400 rounded-full glow-effect floating-element" style="animation-delay: 3s;"></div>
+        </div>
+        
+        <div class="relative z-10 flex flex-col items-center max-w-md w-full p-8 bg-gray-800 bg-opacity-70 rounded-xl backdrop-blur-sm border border-gray-700">
+            <!-- Logo et titre -->
+            <div class="mb-6 text-center">
+                <h1 class="text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">RecovAI</h1>
+                <p class="text-gray-300">Votre assistant intelligent de gestion des créances</p>
+            </div>
+            
+            <!-- IA souriante -->
+            <div class="mb-6 relative">
+                <img src="https://cdn.dribbble.com/users/1486703/screenshots/14540321/media/b3a1e022c2e6d1f0fb8c4fafefafb33b.png" 
+                     alt="IA souriante" 
+                     class="w-40 h-40 object-contain floating-element">
+                <div class="chat-bubble bg-blue-500 text-white p-4 mt-2 rounded-lg">
+                    <p id="welcome-text" class="mb-0">Bienvenue sur RecovAI. Veuillez entrer votre identifiant pour accéder à votre espace personnel.</p>
+                </div>
+            </div>
+            
+            <!-- Champ de connexion -->
+            <form id="login-form" class="w-full">
+                <div class="mb-4">
+                    <label for="user-id" class="block text-sm font-medium text-gray-300 mb-2">Identifiant</label>
+                    <input type="text" id="user-id" 
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" 
+                           placeholder="Votre identifiant" required>
+                </div>
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Se connecter
+                </button>
+            </form>
+        </div>
+        
+        <!-- Message vocal caché -->
+        <audio id="voice-message" autoplay>
+            <source src="https://translate.google.com/translate_tts?ie=UTF-8&q=Bienvenue%20sur%20RecovAI.%20Veuillez%20entrer%20votre%20identifiant%20pour%20accéder%20à%20votre%20espace%20personnel.&tl=fr&client=tw-ob" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Tableau de bord (caché initialement) -->
+    <div id="dashboard-page" class="hidden min-h-screen bg-gray-100 text-gray-900">
+        <!-- Header -->
+        <header class="bg-gray-800 text-white">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-robot text-2xl text-blue-400"></i>
+                    <h1 class="text-xl font-bold">RecovAI</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="avatar-btn" class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button id="logout-btn" class="flex items-center space-x-1 text-gray-300 hover:text-white">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="hidden md:inline">Déconnexion</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenu principal -->
+        <main class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Colonne gauche - Profil et documents -->
+            <div class="space-y-6">
+                <!-- Carte profil -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-gray-800 p-4 flex items-center space-x-4">
+                        <div class="relative">
+                            <img id="debtor-avatar" src="https://randomuser.me/api/portraits/women/65.jpg" 
+                                 alt="Photo du débiteur" 
+                                 class="w-16 h-16 rounded-full border-2 border-white object-cover">
+                            <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border border-white"></div>
+                        </div>
+                        <div>
+                            <h2 id="debtor-name" class="text-white font-semibold">Sophie Martin</h2>
+                            <p class="text-gray-300 text-sm">Numéro de dossier: <span id="file-number">A7654321</span></p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="text-xs text-gray-500">Date/ Lieu de naissance</label>
+                                <p id="birth-info" class="font-medium">15/03/1985, Paris</p>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Contact</label>
+                                <p id="contact-info" class="font-medium">sophie.m@email.com<br>06 12 34 56 78</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="text-xs text-gray-500">Adresse</label>
+                            <p id="address-info" class="font-medium">12 Rue de la Paix, 75002 Paris</p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-500">SIRET</label>
+                            <p id="siret-info" class="font-medium">123 456 789 00012</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Envoi de documents -->
+                <div class="bg-white rounded-xl shadow-md p-4">
+                    <h3 class="font-semibold text-lg mb-4 flex items-center">
+                        <i class="fas fa-file-upload text-blue-500 mr-2"></i> Envoyer un document
+                    </h3>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-50 transition">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-500">Glissez-déposez vos fichiers ici ou cliquez pour sélectionner</p>
+                        <input type="file" class="hidden" id="document-upload" multiple>
+                    </div>
+                    <div class="mt-4">
+                        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">
+                            <i class="fas fa-paper-plane mr-2"></i> Envoyer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Gestionnaire de dossier -->
+                <div class="bg-white rounded-xl shadow-md p-4">
+                    <h3 class="font-semibold text-lg mb-4 flex items-center">
+                        <i class="fas fa-user-shield text-purple-500 mr-2"></i> Votre gestionnaire
+                    </h3>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/42.jpg" 
+                             alt="Gestionnaire" 
+                             class="w-12 h-12 rounded-full object-cover border border-gray-300">
+                        <div>
+                            <p class="font-medium">Jean Dubois</p>
+                            <p class="text-sm text-gray-500">Conseiller clientèle</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-envelope text-gray-400 mr-2 w-4"></i>
+                            <span>jean.dubois@recovai.fr</span>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-phone-alt text-gray-400 mr-2 w-4"></i>
+                            <span>01 23 45 67 89</span>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-calendar-alt text-gray-400 mr-2 w-4"></i>
+                            <span>Disponible: Lun-Ven, 9h-18h</span>
+                        </div>
+                    </div>
+                    <button class="mt-4 w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 rounded-lg transition flex items-center justify-center">
+                        <i class="fas fa-comment-dots mr-2"></i> Contacter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Colonne centrale - Créances et calendrier -->
+            <div class="space-y-6">
+                <!-- Alertes -->
+                <div id="alert-container" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-circle text-yellow-400 mt-1 mr-3"></i>
+                            <div>
+                                <p class="text-sm font-medium text-yellow-800">
+                                    Paiement de 150€ prévu dans 3 jours pour EDF.
+                                </p>
+                            </div>
+                        </div>
+                        <button class="text-yellow-500 hover:text-yellow-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Solde restant -->
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-md p-6 text-white">
+                    <div class="flex justify-between items-center mb-2">
+                        <div>
+                            <h3 class="text-sm font-medium">Solde restant à payer</h3>
+                            <p class="text-3xl font-bold">1 250,50 €</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-2">
+                            <i class="fas fa-coins text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-white border-opacity-20">
+                        <div class="flex justify-between text-sm">
+                            <span>Montant initial:</span>
+                            <span class="font-medium">2 750,00 €</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>Déjà payé:</span>
+                            <span class="font-medium">1 499,50 €</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste des créances -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="border-b border-gray-200 p-4">
+                        <h3 class="font-semibold text-lg flex items-center">
+                            <i class="fas fa-file-invoice-dollar text-blue-500 mr-2"></i> Vos créances
+                        </h3>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        <!-- Item création -->
+                        <div class="p-4 hover:bg-gray-50 transition">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                        <i class="fas fa-bolt text-blue-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">EDF</p>
+                                        <p class="text-xs text-gray-500">N° Facture: INV-2023-0258</p>
+                                    </div>
+                                </div>
+                                <span class="text-red-500 font-bold">450,00 €</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">En cours</span>
+                                <span class="text-gray-500">Échéance: 15/06/2023</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Item création -->
+                        <div class="p-4 hover:bg-gray-50 transition">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                        <i class="fas fa-mobile-alt text-purple-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">SFR</p>
+                                        <p class="text-xs text-gray-500">N° Facture: INV-2023-5874</p>
+                                    </div>
+                                </div>
+                                <span class="text-red-500 font-bold">150,00 €</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">En cours</span>
+                                <span class="text-gray-500">Échéance: 05/06/2023</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Item création -->
+                        <div class="p-4 hover:bg-gray-50 transition">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                        <i class="fas fa-phone-alt text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Orange</p>
+                                        <p class="text-xs text-gray-500">N° Facture: INV-2023-9632</p>
+                                    </div>
+                                </div>
+                                <span class="text-red-500 font-bold">350,00 €</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Payé</span>
+                                <span class="text-gray-500">Payé le: 25/05/2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne droite - Calendrier et chatbot -->
+            <div class="space-y-6">
+                <!-- Calendrier -->
+                <div class="bg-white rounded-xl shadow-md p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-lg flex items-center">
+                            <i class="fas fa-calendar-day text-indigo-500 mr-2"></i> Calendrier
+                        </h3>
+                        <div class="flex space-x-2">
+                            <button class="p-1 text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span class="text-sm font-medium">Juin 2023</span>
+                            <button class="p-1 text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1 mb-3">
+                        <div class="text-xs text-center text-gray-500 font-medium p-1">L</div>
+                        <div class="text-xs text-center text-gray-500 font-medium p-1">M</div>
+                        <div class="text-xs text-center text-gray-500 font-medium p-1">M</div>
+                        <div class="text-xs text-center text-gray-500 font-medium p-1">J</div>
+                        <div class="text-xs text-center text-gray-500 font-medium p-1">V</div>
+                        <div class="text-xs text-center text-gray-500 font-medium p-1">S</div>
+                        <div class="text-xs text-center text-gray-500 font-medium p-1">D</div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1">
+                        <div class="h-10 text-center text-sm p-1 text-gray-400">29</div>
+                        <div class="h-10 text-center text-sm p-1 text-gray-400">30</div>
+                        <div class="h-10 text-center text-sm p-1 text-gray-400">31</div>
+                        <div class="h-10 text-center text-sm p-1">1</div>
+                        <div class="h-10 text-center text-sm p-1">2</div>
+                        <div class="h-10 text-center text-sm p-1">
+                            <div class="h-8 w-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-800 mx-auto">
+                                3
+                            </div>
+                        </div>
+                        <div class="h-10 text-center text-sm p-1">4</div>
+                        <div class="h-10 text-center text-sm p-1">5</div>
+                        <div class="h-10 text-center text-sm p-1">
+                            <div class="h-8 w-8 flex items-center justify-center rounded-full bg-red-100 text-red-800 mx-auto">
+                                6
+                            </div>
+                        </div>
+                        <div class="h-10 text-center text-sm p-1">7</div>
+                        <div class="h-10 text-center text-sm p-1">8</div>
+                        <div class="h-10 text-center text-sm p-1">9</div>
+                        <div class="h-10 text-center text-sm p-1">10</div>
+                        <div class="h-10 text-center text-sm p-1">11</div>
+                        <div class="h-10 text-center text-sm p-1">12</div>
+                        <div class="h-10 text-center text-sm p-1">13</div>
+                        <div class="h-10 text-center text-sm p-1">14</div>
+                        <div class="h-10 text-center text-sm p-1">15</div>
+                        <div class="h-10 text-center text-sm p-1">16</div>
+                        <div class="h-10 text-center text-sm p-1">17</div>
+                        <div class="h-10 text-center text-sm p-1">18</div>
+                        <div class="h-10 text-center text-sm p-1">19</div>
+                        <div class="h-10 text-center text-sm p-1">20</div>
+                        <div class="h-10 text-center text-sm p-1">21</div>
+                        <div class="h-10 text-center text-sm p-1">22</div>
+                        <div class="h-10 text-center text-sm p-1">23</div>
+                        <div class="h-10 text-center text-sm p-1">24</div>
+                        <div class="h-10 text-center text-sm p-1">25</div>
+                        <div class="h-10 text-center text-sm p-1">26</div>
+                        <div class="h-10 text-center text-sm p-1">27</div>
+                        <div class="h-10 text-center text-sm p-1">28</div>
+                        <div class="h-10 text-center text-sm p-1">29</div>
+                        <div class="h-10 text-center text-sm p-1">30</div>
+                        <div class="h-10 text-center text-sm p-1 text-gray-400">1</div>
+                    </div>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex items-start space-x-2">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full mt-1.5"></div>
+                            <div class="text-sm">
+                                <span class="font-medium">Paiement EDF</span> - 450,00 € (15 juin)
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2">
+                            <div class="w-2 h-2 bg-indigo-500 rounded-full mt-1.5"></div>
+                            <div class="text-sm">
+                                <span class="font-medium">Rendez-vous conseiller</span> (6 juin, 14h)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chatbot -->
+                <div class="bg-white rounded-xl shadow-md p-4">
+                    <div class="flex items-center mb-4">
+                        <div class="relative">
+                            <img src="https://cdn.dribbble.com/users/1486703/screenshots/14540321/media/b3a1e022c2e6d1f0fb8c4fafefafb33b.png" 
+                                 alt="RecovAI Assistant" 
+                                 class="w-12 h-12 rounded-full object-cover">
+                            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="font-medium">RecovAI Assistant</p>
+                            <p class="text-xs text-gray-500">En ligne</p>
+                        </div>
+                    </div>
+                    <div id="chat-container" class="h-60 overflow-y-auto mb-4 space-y-3 p-2 bg-gray-50 rounded-lg">
+                        <div class="flex items-start space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-robot text-white text-sm"></i>
+                            </div>
+                            <div class="bg-blue-100 text-sm p-3 rounded-lg rounded-tl-none max-w-xs">
+                                Bonjour Sophie, comment puis-je vous aider aujourd'hui ?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" 
+                               placeholder="Tapez votre message..." 
+                               class="flex-grow px-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="w-10 h-10 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal personnalisation avatar -->
+        <div id="avatar-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white rounded-xl max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Personnaliser votre avatar</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mb-6">
+                    <div class="flex justify-center mb-4">
+                        <div class="relative">
+                            <img id="selected-avatar" src="https://randomuser.me/api/portraits/women/65.jpg" 
+                                 alt="Avatar sélectionné" 
+                                 class="w-32 h-32 rounded-full object-cover border-4 border-indigo-100">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2 mb-4">
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/women/43.jpg" 
+                                 alt="Avatar option 1" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/women/28.jpg" 
+                                 alt="Avatar option 2" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" 
+                                 alt="Avatar option 3" 
+                                 class="w-full rounded-full border-2 border-indigo-400 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                                 alt="Avatar option 4" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" 
+                                 alt="Avatar option 5" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2">
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" 
+                                 alt="Avatar option 6" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/women/95.jpg" 
+                                 alt="Avatar option 7" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/women/12.jpg" 
+                                 alt="Avatar option 8" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/men/42.jpg" 
+                                 alt="Avatar option 9" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/women/33.jpg" 
+                                 alt="Avatar option 10" 
+                                 class="w-full rounded-full border-2 border-gray-300 avatar-option cursor-pointer hover:border-indigo-300">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button id="cancel-avatar" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+                        Annuler
+                    </button>
+                    <button id="save-avatar" class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition">
+                        Enregistrer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gestion de la page de connexion
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lire le message vocal
+            const voiceMessage = document.getElementById('voice-message');
+            if (voiceMessage) {
+                voiceMessage.play().catch(e => console.log("La lecture automatique est bloquée: " + e));
+            }
+
+            // Gestion de la connexion
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    document.getElementById('login-page').classList.add('hidden');
+                    document.getElementById('dashboard-page').classList.remove('hidden');
+                    
+                    // Animation d'entrée pour le dashboard
+                    document.getElementById('dashboard-page').classList.add('animate-fade-in');
+                });
+            }
+
+            // Gestion de la déconnexion
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    document.getElementById('login-page').classList.remove('hidden');
+                    document.getElementById('dashboard-page').classList.add('hidden');
+                });
+            }
+
+            // Gestion de la personnalisation de l'avatar
+            const avatarBtn = document.getElementById('avatar-btn');
+            const avatarModal = document.getElementById('avatar-modal');
+            const closeModal = document.getElementById('close-modal');
+            const cancelAvatar = document.getElementById('cancel-avatar');
+            const saveAvatar = document.getElementById('save-avatar');
+            const avatarOptions = document.querySelectorAll('.avatar-option');
+            const selectedAvatar = document.getElementById('selected-avatar');
+            const debtorAvatar = document.getElementById('debtor-avatar');
+
+            if (avatarBtn) {
+                avatarBtn.addEventListener('click', function() {
+                    avatarModal.classList.remove('hidden');
+                });
+            }
+
+            if (closeModal) {
+                closeModal.addEventListener('click', function() {
+                    avatarModal.classList.add('hidden');
+                });
+            }
+
+            if (cancelAvatar) {
+                cancelAvatar.addEventListener('click', function() {
+                    avatarModal.classList.add('hidden');
+                });
+            }
+
+            if (saveAvatar) {
+                saveAvatar.addEventListener('click', function() {
+                    debtorAvatar.src = selectedAvatar.src;
+                    avatarModal.classList.add('hidden');
+                    
+                    // Montrer une alerte de succès
+                    const alertContainer = document.getElementById('alert-container');
+                    alertContainer.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-green-800">
+                                        Votre avatar a été mis à jour avec succès.
+                                    </p>
+                                </div>
+                            </div>
+                            <button class="text-green-500 hover:text-green-600 close-alert">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Ajouter le gestionnaire d'événements pour fermer l'alerte
+                    document.querySelector('.close-alert').addEventListener('click', function() {
+                        alertContainer.classList.add('hidden');
+                        setTimeout(() => {
+                            alertContainer.classList.remove('hidden');
+                            alertContainer.innerHTML = `
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-exclamation-circle text-yellow-400 mt-1 mr-3"></i>
+                                        <div>
+                                            <p class="text-sm font-medium text-yellow-800">
+                                                Paiement de 150€ prévu dans 3 jours pour EDF.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button class="text-yellow-500 hover:text-yellow-600 close-alert">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            `;
+                            document.querySelector('.close-alert').addEventListener('click', function() {
+                                alertContainer.classList.add('hidden');
+                            });
+                        }, 5000);
+                    });
+                });
+            }
+
+            // Sélection d'un avatar
+            avatarOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    avatarOptions.forEach(opt => opt.classList.remove('border-indigo-400'));
+                    option.classList.add('border-indigo-400');
+                    selectedAvatar.src = option.src;
+                });
+            });
+
+            // Simulation du chatbot
+            const chatInput = document.querySelector('#chat-container').parentElement.querySelector('input');
+            const chatSendBtn = document.querySelector('#chat-container').parentElement.querySelector('button');
+            const chatContainer = document.getElementById('chat-container');
+
+            if (chatInput && chatSendBtn) {
+                chatSendBtn.addEventListener('click', sendMessage);
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') sendMessage();
+                });
+            }
+
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    // Ajouter le message de l'utilisateur
+                    chatContainer.innerHTML += `
+                        <div class="flex items-start justify-end space-x-2">
+                            <div class="bg-indigo-100 text-sm p-3 rounded-lg rounded-tr-none max-w-xs">
+                                ${message}
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user text-white text-sm"></i>
+                            </div>
+                        </div>
+                    `;
+                    
+                    chatInput.value = '';
+                    
+                    // Réponse automatique de RecovAI
+                    setTimeout(() => {
+                        const responses = [
+                            "Je peux vous aider avec vos paiements ou vos créances. Que souhaitez-vous savoir ?",
+                            "Merci pour votre message. Pour plus d'informations, vous pouvez consulter la section 'Créances'.",
+                            "Souhaitez-vous programmer un nouveau paiement ou modifier un paiement existant ?",
+                            "Je note votre demande et la transmets à votre gestionnaire de dossier.",
+                            "Votre solde restant à payer s'élève à 1 250,50 €. Voulez-vous régler une partie maintenant ?"
+                        ];
+                        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                        
+                        chatContainer.innerHTML += `
+                            <div class="flex items-start space-x-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-robot text-white text-sm"></i>
+                                </div>
+                                <div class="bg-blue-100 text-sm p-3 rounded-lg rounded-tl-none max-w-xs">
+                                    ${randomResponse}
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Faire défiler vers le bas
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    }, 1000);
+                    
+                    // Faire défiler vers le bas
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
-"""
-
-dashboard_html = """
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tableau de bord - RecovAI</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 2rem;
-      background: url('fond_futuriste.png') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Segoe UI', sans-serif;
-      backdrop-filter: blur(2px);
-      color: #333;
-    }
-    .container {
-      background: rgba(255,255,255,0.95);
-      padding: 2rem;
-      border-radius: 1rem;
-      max-width: 960px;
-      margin: auto;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-    img {
-      width: 120px;
-      height: 120px;
-      border-radius: 9999px;
-      border: 3px solid #3B82F6;
-    }
-    h2 {
-      margin-top: 0;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
-    }
-    .section {
-      margin-bottom: 1.5rem;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="section" style="text-align:center">
-      <img src="photo_debiteur_final.png" alt="Photo débiteur">
-      <h2>Espace personnel de Thomas Martin</h2>
-      <p>Status : En cours de règlement</p>
-    </div>
-    <div class="grid section">
-      <div>
-        <h3>Informations</h3>
-        <p><strong>N° Dossier :</strong> 2025-01478</p>
-        <p><strong>Date de naissance :</strong> 02/04/1985</p>
-        <p><strong>Lieu de naissance :</strong> Paris</p>
-        <p><strong>Email :</strong> t.martin@example.com</p>
-        <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
-      </div>
-      <div>
-        <h3>Adresse & SIRET</h3>
-        <p><strong>Adresse :</strong> 123 rue de Paris, 75000</p>
-        <p><strong>Pays :</strong> France</p>
-        <p><strong>N° SIRET :</strong> 81234567800012</p>
-      </div>
-    </div>
-    <div class="grid section">
-      <div>
-        <h3>Créances</h3>
-        <ul>
-          <li>EDF : 342 €</li>
-          <li>Orange : 489 €</li>
-          <li>SFR : 121 €</li>
-        </ul>
-        <p><strong>Total :</strong> 5 000 €</p>
-        <p><strong>Reste à payer :</strong> 3 000 €</p>
-      </div>
-      <div>
-        <h3>Calendrier</h3>
-        <p>15/06/2025 – 1000 € – à venir</p>
-        <p>15/05/2025 – 1000 € – payé</p>
-        <p>15/04/2025 – 1000 € – payé</p>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
-"""
-
-# Enregistrer les fichiers
-index_file = Path("/mnt/data/index.html")
-dashboard_file = Path("/mnt/data/dashboard.html")
-index_file.write_text(index_html, encoding="utf-8")
-dashboard_file.write_text(dashboard_html, encoding="utf-8")
-
-index_file.name, dashboard_file.name
