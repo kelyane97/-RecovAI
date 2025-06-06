@@ -1,192 +1,1777 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FileText, Download, Upload, Search, Filter, Eye } from 'lucide-react';
-import Card from '../../components/ui/Card';
-import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
-
-// Mock data for documents
-const mockDocuments = [
-  {
-    id: 'DOC-001',
-    name: 'Échéancier de paiement',
-    type: 'PDF',
-    size: '245 KB',
-    date: '15/03/2025',
-    category: 'Paiement',
-    status: 'Signé'
-  },
-  {
-    id: 'DOC-002',
-    name: 'Contrat initial',
-    type: 'PDF',
-    size: '1.2 MB',
-    date: '10/03/2025',
-    category: 'Contrat',
-    status: 'Signé'
-  },
-  {
-    id: 'DOC-003',
-    name: 'Facture EDF Mars 2025',
-    type: 'PDF',
-    size: '156 KB',
-    date: '05/03/2025',
-    category: 'Facture',
-    status: 'En attente'
-  },
-  {
-    id: 'DOC-004',
-    name: 'Justificatif de domicile',
-    type: 'JPG',
-    size: '2.1 MB',
-    date: '01/03/2025',
-    category: 'Justificatif',
-    status: 'Validé'
-  },
-  {
-    id: 'DOC-005',
-    name: 'Reçu de paiement',
-    type: 'PDF',
-    size: '89 KB',
-    date: '28/02/2025',
-    category: 'Paiement',
-    status: 'Validé'
-  }
-];
-
-const DebtorDocuments: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  
-  // Filter documents based on search term and category
-  const filteredDocuments = mockDocuments.filter(doc => {
-    const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || doc.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  // Get unique categories for filter
-  const categories = Array.from(new Set(mockDocuments.map(doc => doc.category)));
-
-  return (
-    <div className="max-w-7xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-bold text-neutral-900">Documents</h1>
-            <p className="text-neutral-500">Gérez vos documents et justificatifs</p>
-          </div>
-          
-          <div className="mt-4 sm:mt-0">
-            <Button
-              variant="primary"
-              leftIcon={<Upload size={18} />}
-            >
-              Ajouter un document
-            </Button>
-          </div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecovAI - Plateforme intelligente de recouvrement de créances</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.4s ease-out forwards;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Avatar animation */
+        .avatar-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Gradient background */
+        .gradient-bg {
+            background: linear-gradient(135deg, #4F46E5 0%, #10B981 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Loading Screen -->
+    <div id="loading" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="w-20 h-20 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <h2 class="text-2xl font-bold text-gray-800">Chargement de RecovAI...</h2>
+            <p class="text-gray-600 mt-2">Préparation de votre expérience personnalisée</p>
         </div>
+    </div>
 
-        {/* Filters and Search */}
-        <Card className="mb-6">
-          <div className="flex flex-col md:flex-row md:items-center gap-4 p-4">
-            <div className="flex-1">
-              <Input
-                placeholder="Rechercher un document..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                leftIcon={<Search size={18} />}
-              />
+    <!-- Homepage (Displayed by default) -->
+    <div id="homepage" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm py-4 px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl">R</div>
+                <span class="text-xl font-bold text-gray-800">Recov<span class="text-primary">AI</span></span>
+            </div>
+            <div class="flex space-x-4">
+                <button onclick="showLogin()" class="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition">Se connecter</button>
+                <button onclick="showSignup()" class="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary/10 transition">Créer un compte</button>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <main class="flex-grow gradient-bg text-white">
+            <div class="container mx-auto px-4 py-12 flex flex-col lg:flex-row items-center justify-between">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 fade-in">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Recouvrement intelligent,<br>relation humaine</h1>
+                    <p class="text-xl mb-8 text-white/90">La plateforme SaaS qui révolutionne la gestion des créances grâce à l'intelligence artificielle tout en préservant la relation humaine.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button onclick="showDemo()" class="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition flex items-center justify-center">
+                            <i class="fas fa-play-circle mr-2"></i> Voir la démo
+                        </button>
+                        <button onclick="showFeatures()" class="border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition flex items-center justify-center">
+                            <i class="fas fa-info-circle mr-2"></i> Fonctionnalités
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 flex justify-center slide-up">
+                    <div class="bg-white/20 backdrop-blur-lg rounded-3xl p-6 max-w-lg w-full">
+                        <div class="bg-white rounded-2xl overflow-hidden shadow-xl">
+                            <!-- AI Avatar Section -->
+                            <div class="bg-primary text-white p-6 flex items-center">
+                                <div class="relative w-16 h-16 mr-4">
+                                    <div class="avatar-bounce absolute inset-0 bg-white rounded-full flex items-center justify-center text-primary text-3xl">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg">Assistant RecovAI</h3>
+                                    <p class="text-sm opacity-90">Prêt à vous aider</p>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div id="avatar-message" class="mb-4 p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-gray-700">Bonjour et bienvenue sur RecovAI. Veuillez entrer votre identifiant pour accéder à votre espace.</p>
+                                </div>
+                                <div class="flex">
+                                    <input type="text" placeholder="Votre identifiant" class="flex-grow px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <button class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-primary/90 transition">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                                <div class="flex justify-between mt-4 text-sm text-gray-500">
+                                    <button onclick="showForgotPassword()" class="hover:text-primary transition">Identifiant oublié ?</button>
+                                    <button onclick="virtualAssistant()" class="flex items-center hover:text-primary transition">
+                                        <i class="fas fa-headphones mr-1"></i> Assistant vocal
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Features Section (Hidden by default) -->
+        <div id="features-section" class="hidden bg-white py-16 px-4">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Fonctionnalités clés</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-brain text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-800">Intelligence Artificielle</h3>
+                        <p class="text-gray-600">Anticipez les comportements de paiement grâce à nos algorithmes prédictifs et adaptez votre stratégie de recouvrement.</p>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-robot text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-800">Assistant Virtuel</h3>
+                        <p class="text-gray-600">Notre avatar IA personnalisable accompagne vos débiteurs 24/7 pour des rappels et conseils bienveillants.</p>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-800">Tableaux de Bord</h3>
+                        <p class="text-gray-600">Visualisez en temps réel l'état de vos créances, les tendances et les performances de recouvrement.</p>
+                    </div>
+                    
+                    <!-- Feature 4 -->
+                    <div class="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-sync-alt text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-800">Automatisation</h3>
+                        <p class="text-gray-600">Automatisez les relances par email, SMS et notifications pour gagner du temps et améliorer l'efficacité.</p>
+                    </div>
+                    
+                    <!-- Feature 5 -->
+                    <div class="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-file-invoice-dollar text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-800">Portail Débiteur</h3>
+                        <p class="text-gray-600">Espace personnalisé pour chaque débiteur avec échéancier, documents et options de paiement.</p>
+                    </div>
+                    
+                    <!-- Feature 6 -->
+                    <div class="bg-gray-50 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-lock text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-800">Sécurité</h3>
+                        <p class="text-gray-600">Données chiffrées, authentification forte et conformité totale avec les réglementations en vigueur.</p>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <button onclick="hideFeatures()" class="px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition">
+                        Retour à l'accueil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal (Hidden by default) -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md slide-up">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Connexion</h2>
+                    <button onclick="hideLogin()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Identifiant</label>
+                        <input type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Mot de passe</label>
+                        <input type="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        <div class="text-right mt-2">
+                            <a href="#" class="text-sm text-primary hover:underline">Mot de passe oublié ?</a>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition mb-4">
+                        Se connecter
+                    </button>
+                    
+                    <div class="text-center text-sm text-gray-600">
+                        Pas encore de compte ? <a href="#" onclick="toggleAuthModal('login', 'signup')" class="text-primary hover:underline">S'inscrire</a>
+                    </div>
+                </form>
             </div>
             
-            <div className="flex items-center gap-2">
-              <Filter size={18} className="text-neutral-500" />
-              <select
-                className="form-select rounded-md border-neutral-300 focus:border-primary-500 focus:ring focus:ring-primary-500 focus:ring-opacity-50"
-                value={selectedCategory || ''}
-                onChange={(e) => setSelectedCategory(e.target.value || null)}
-              >
-                <option value="">Toutes catégories</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
+            <div class="border-t p-4 bg-gray-50 rounded-b-xl">
+                <button class="w-full flex items-center justify-center space-x-2 text-gray-700 hover:bg-gray-100 py-2 rounded-lg transition">
+                    <i class="fab fa-google text-red-500"></i>
+                    <span>Continuer avec Google</span>
+                </button>
             </div>
-          </div>
-        </Card>
-
-        {/* Documents Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredDocuments.map(doc => (
-            <motion.div
-              key={doc.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Card hover className="h-full">
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-primary-50 text-primary-600 rounded-lg">
-                      <FileText size={24} />
-                    </div>
-                    <div className={`px-3 py-1 rounded-full text-sm font-medium
-                      ${doc.status === 'Validé' ? 'bg-success-100 text-success-700' : ''}
-                      ${doc.status === 'En attente' ? 'bg-warning-100 text-warning-700' : ''}
-                      ${doc.status === 'Signé' ? 'bg-primary-100 text-primary-700' : ''}
-                    `}>
-                      {doc.status}
-                    </div>
-                  </div>
-                  
-                  <h3 className="font-medium text-neutral-900 mb-1">{doc.name}</h3>
-                  <p className="text-sm text-neutral-500 mb-4">
-                    {doc.type} • {doc.size} • {doc.date}
-                  </p>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-neutral-200">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      leftIcon={<Eye size={16} />}
-                    >
-                      Voir
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      leftIcon={<Download size={16} />}
-                    >
-                      Télécharger
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
         </div>
-
-        {filteredDocuments.length === 0 && (
-          <div className="text-center py-12">
-            <div className="mb-4">
-              <FileText size={48} className="mx-auto text-neutral-400" />
-            </div>
-            <h3 className="text-lg font-medium text-neutral-800 mb-2">
-              Aucun document trouvé
-            </h3>
-            <p className="text-neutral-600">
-              Modifiez vos critères de recherche ou ajoutez un nouveau document.
-            </p>
-          </div>
-        )}
-      </motion.div>
     </div>
-  );
-};
 
-export default DebtorDocuments;
+    <!-- Signup Modal (Hidden by default) -->
+    <div id="signup-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md slide-up">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Créer un compte</h2>
+                    <button onclick="hideSignup()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Type de compte</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button type="button" class="border py-2 rounded-lg hover:border-primary hover:bg-primary/10 transition">
+                                <i class="fas fa-user-tie mr-2"></i> Professionnel
+                            </button>
+                            <button type="button" class="border py-2 rounded-lg hover:border-primary hover:bg-primary/10 transition">
+                                <i class="fas fa-user mr-2"></i> Débiteur
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Email</label>
+                        <input type="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Mot de passe</label>
+                        <input type="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Confirmer le mot de passe</label>
+                        <input type="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    
+                    <div class="mb-4 flex items-start">
+                        <input type="checkbox" id="terms" class="mt-1 mr-2">
+                        <label for="terms" class="text-sm text-gray-600">J'accepte les <a href="#" class="text-primary hover:underline">conditions générales</a> et la <a href="#" class="text-primary hover:underline">politique de confidentialité</a>.</label>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition mb-4">
+                        Créer mon compte
+                    </button>
+                    
+                    <div class="text-center text-sm text-gray-600">
+                        Déjà inscrit ? <a href="#" onclick="toggleAuthModal('signup', 'login')" class="text-primary hover:underline">Se connecter</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Debtor Dashboard (Hidden by default) -->
+    <div id="debtor-dashboard" class="hidden min-h-screen bg-gray-100">
+        <!-- Sidebar -->
+        <div class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300" id="sidebar">
+            <div class="flex items-center justify-center h-16 bg-primary text-white">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary font-bold text-sm">R</div>
+                    <span class="text-lg font-bold">Recov<span class="text-white">AI</span></span>
+                </div>
+            </div>
+            
+            <div class="p-4 border-b flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profil" class="w-full h-full object-cover" id="debtor-avatar">
+                </div>
+                <div>
+                    <h3 class="font-medium" id="debtor-name">Jean Dupont</h3>
+                    <p class="text-xs text-gray-500">#D-2023-0456</p>
+                </div>
+            </div>
+            
+            <nav class="p-2 mt-2">
+                <div class="space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 bg-primary/10 text-primary rounded-lg">
+                        <i class="fas fa-tachometer-alt mr-3 text-primary"></i>
+                        Tableau de bord
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-file-invoice-dollar mr-3"></i>
+                        Mes créances
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-calendar-alt mr-3"></i>
+                        Échéancier
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-file-upload mr-3"></i>
+                        Documents à fournir
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-comments mr-3"></i>
+                        Messagerie
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-cog mr-3"></i>
+                        Paramètres
+                    </a>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Assistance</h3>
+                    <div class="mt-1 space-y-1">
+                        <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <i class="fas fa-question-circle mr-3"></i>
+                            Aide & FAQ
+                        </a>
+                        <a href="#" onclick="virtualAssistant()" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <i class="fas fa-robot mr-3"></i>
+                            Assistant virtuel
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Mobile header -->
+        <div class="lg:hidden fixed top-0 left-0 right-0 bg-white shadow-sm h-16 flex items-center px-4 z-30">
+            <button onclick="toggleSidebar()" class="text-gray-600 mr-4">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">R</div>
+                <span class="text-lg font-bold text-gray-800">Recov<span class="text-primary">AI</span></span>
+            </div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="lg:pl-64 pt-16 min-h-screen">
+            <div class="p-4 md:p-8">
+                <!-- Dashboard header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Tableau de bord</h1>
+                        <p class="text-gray-600">Bienvenue dans votre espace personnel RecovAI</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex items-center space-x-4">
+                        <div class="relative">
+                            <button onclick="toggleNotifDropdown()" class="text-gray-600 hover:text-gray-900 relative">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">3</span>
+                            </button>
+                            <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg z-50 border">
+                                <div class="p-3 border-b">
+                                    <h3 class="font-medium text-gray-800">Notifications (3)</h3>
+                                </div>
+                                <div class="divide-y max-h-80 overflow-y-auto">
+                                    <a href="#" class="flex items-start p-3 hover:bg-gray-50">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-file-invoice-dollar text-blue-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Nouvelle facture disponible</p>
+                                            <p class="text-xs text-gray-500 mt-1">Facture EDF du 15/06/2023</p>
+                                            <p class="text-xs text-gray-400 mt-1">Hier à 14:32</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="flex items-start p-3 hover:bg-gray-50">
+                                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Paiement en retard</p>
+                                            <p class="text-xs text-gray-500 mt-1">Facture SFR non réglée (52.99€)</p>
+                                            <p class="text-xs text-gray-400 mt-1">15 juin 14:20</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="flex items-start p-3 hover:bg-gray-50">
+                                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-check-circle text-green-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Paiement confirmé</p>
+                                            <p class="text-xs text-gray-500 mt-1">Orange Mobile - 32.50€</p>
+                                            <p class="text-xs text-gray-400 mt-1">12 juin 09:45</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-3 text-center border-t">
+                                    <a href="#" class="text-sm text-primary hover:underline">Voir toutes les notifications</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profil" class="w-full h-full object-cover">
+                            </div>
+                            <button onclick="toggleProfileDropdown()" class="ml-2 text-gray-600 hover:text-gray-900">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            
+                            <div id="profile-dropdown" class="hidden absolute right-4 mt-40 w-48 bg-white rounded-md shadow-lg z-50 border">
+                                <div class="py-2">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mon profil</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Paramètres</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Historique</a>
+                                    <div class="border-t"></div>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="logout()">Déconnexion</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-primary">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Total dû</h3>
+                                <p class="text-2xl font-bold text-gray-800">1 245,67 €</p>
+                            </div>
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">En retard</h3>
+                                <p class="text-2xl font-bold text-gray-800">256,99 €</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-500">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Réglé ce mois</h3>
+                                <p class="text-2xl font-bold text-gray-800">432,50 €</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-500">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Score RecovAI</h3>
+                                <p class="text-2xl font-bold text-gray-800">72/100</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Upcoming Payments -->
+                    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-gray-800">Échéances à venir</h2>
+                            <a href="#" class="text-sm text-primary hover:underline">Voir tout</a>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-bolt text-blue-500"></i>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="font-medium">EDF - Électricité</h3>
+                                    <p class="text-sm text-gray-500">15 juillet 2023</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium">87,42 €</p>
+                                    <div class="text-xs text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full inline-block">Dans 7 jours</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-phone-alt text-green-500"></i>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="font-medium">Orange - Mobile</h3>
+                                    <p class="text-sm text-gray-500">25 juillet 2023</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium">32,50 €</p>
+                                    <div class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full inline-block">Dans 17 jours</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-tv text-purple-500"></i>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="font-medium">SFR - Internet/TV</h3>
+                                    <p class="text-sm text-gray-500">30 juillet 2023</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium">52,99 €</p>
+                                    <div class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full inline-block">Dans 22 jours</div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center pt-2">
+                                <button class="text-primary hover:underline text-sm">+ Ajouter un rappel au calendrier</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Options -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="mb-6">
+                            <h2 class="text-lg font-bold text-gray-800">Options de paiement</h2>
+                            <p class="text-sm text-gray-500">Réglez vos échéances en toute sécurité</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <button class="w-full flex items-center justify-between p-3 bg-primary/10 border border-primary rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <span>Carte bancaire</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-primary"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-500 mr-4">
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                    <span>Virement bancaire</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 mr-4">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    <span>Prélèvement SEPA</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-500 mr-4">
+                                        <i class="fas fa-receipt"></i>
+                                    </div>
+                                    <span>Plan de paiement</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Debts Summary -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-bold text-gray-800">Mes créances</h2>
+                        <a href="#" class="text-sm text-primary hover:underline">Voir tout</a>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Créancier</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Référence</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                                <i class="fas fa-bolt text-blue-500"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">EDF</div>
+                                                <div class="text-sm text-gray-500">Électricité</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm">F2023-EDF-0567</div>
+                                        <div class="text-sm text-gray-500">15/06/2023</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        87,42 €
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">En retard</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="#" class="text-primary hover:text-primary/80 mr-3">Payer</a>
+                                        <a href="#" class="text-gray-600 hover:text-gray-900">Détails</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                                                <i class="fas fa-tv text-purple-500"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">SFR</div>
+                                                <div class="text-sm text-gray-500">Internet/TV</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm">F2023-SFR-0345</div>
+                                        <div class="text-sm text-gray-500">01/06/2023</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        52,99 €
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">En retard</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="#" class="text-primary hover:text-primary/80 mr-3">Payer</a>
+                                        <a href="#" class="text-gray-600 hover:text-gray-900">Détails</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                                <i class="fas fa-phone-alt text-green-500"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">Orange</div>
+                                                <div class="text-sm text-gray-500">Mobile</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm">F2023-ORA-0789</div>
+                                        <div class="text-sm text-gray-500">25/05/2023</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        32,50 €
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Payé</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="#" class="text-primary hover:text-primary/80 mr-3">Duplicata</a>
+                                        <a href="#" class="text-gray-600 hover:text-gray-900">Détails</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Documents & Virtual Assistant -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Documents -->
+                    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-gray-800">Documents à fournir</h2>
+                            <button class="text-sm text-primary hover:underline">Tout télécharger</button>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                                        <i class="fas fa-file-pdf text-red-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium">Justificatif de revenus</h3>
+                                        <p class="text-sm text-gray-500">Nécessaire pour votre plan de paiement</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="text-sm text-white bg-primary px-3 py-1 rounded hover:bg-primary/90 transition">Télécharger</button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                        <i class="fas fa-file-pdf text-blue-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium">RIB</h3>
+                                        <p class="text-sm text-gray-500">Pour mise en place prélèvement</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="text-sm text-white bg-primary px-3 py-1 rounded hover:bg-primary/90 transition">Télécharger</button>
+                                </div>
+                            </div>
+                            
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <div class="mx-auto w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                                    <i class="fas fa-cloud-upload-alt text-gray-500"></i>
+                                </div>
+                                <h3 class="font-medium mb-1">Déposer des documents</h3>
+                                <p class="text-sm text-gray-500 mb-3">Glissez-déposez vos fichiers ou cliquez pour parcourir</p>
+                                <button class="text-sm text-primary border border-primary px-3 py-1 rounded hover:bg-primary/10 transition">Sélectionner des fichiers</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Virtual Assistant -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="mb-6">
+                            <h2 class="text-lg font-bold text-gray-800">Assistance RecovAI</h2>
+                            <p class="text-sm text-gray-500">Besoin d'aide ? Notre IA est à votre service.</p>
+                        </div>
+                        
+                        <div class="relative h-64 mb-4">
+                            <div class="absolute bottom-0 right-0 w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white">
+                                <i class="fas fa-robot text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button onclick="virtualAssistant()" class="w-full flex items-center justify-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-lg hover:bg-primary/20 transition">
+                                <i class="fas fa-comment-alt"></i>
+                                <span>Discuter avec l'assistant</span>
+                            </button>
+                            <button onclick="virtualAssistantVoice()" class="w-full flex items-center justify-center space-x-2 border border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary/10 transition">
+                                <i class="fas fa-microphone"></i>
+                                <span>Mode vocal</span>
+                            </button>
+                        </div>
+                        
+                        <div class="mt-6 pt-6 border-t">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <i class="fas fa-user-tie text-gray-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Votre gestionnaire</h3>
+                                    <p class="text-sm text-gray-500">Me Dupont, Huissier</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 space-y-2">
+                                <a href="#" class="flex items-center text-sm text-gray-700 hover:text-primary">
+                                    <i class="fas fa-phone-alt mr-2 text-gray-400"></i>
+                                    01 45 67 89 10
+                                </a>
+                                <a href="#" class="flex items-center text-sm text-gray-700 hover:text-primary">
+                                    <i class="fas fa-envelope mr-2 text-gray-400"></i>
+                                    contact@huissier-dupont.com
+                                </a>
+                                <a href="#" class="flex items-center text-sm text-gray-700 hover:text-primary">
+                                    <i class="fas fa-calendar mr-2 text-gray-400"></i>
+                                    Prendre rendez-vous
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manager Dashboard (Hidden by default) -->
+    <div id="manager-dashboard" class="hidden min-h-screen bg-gray-100">
+        <!-- Sidebar -->
+        <div class="fixed inset-y-0 left-0 w-64 bg-white shadow-md z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300" id="manager-sidebar">
+            <div class="flex items-center justify-center h-16 bg-primary text-white">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary font-bold text-sm">R</div>
+                    <span class="text-lg font-bold">Recov<span class="text-white">AI</span></span>
+                </div>
+            </div>
+            
+            <div class="p-4 border-b flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profil" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h3 class="font-medium">Me Sophie Dupont</h3>
+                    <p class="text-xs text-gray-500">Cabinet Dupont</p>
+                </div>
+            </div>
+            
+            <nav class="p-2 mt-2">
+                <div class="space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 bg-primary/10 text-primary rounded-lg">
+                        <i class="fas fa-tachometer-alt mr-3 text-primary"></i>
+                        Tableau de bord
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-users mr-3"></i>
+                        Dossiers clients
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-chart-bar mr-3"></i>
+                        Reporting
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-robot mr-3"></i>
+                        Assistant IA
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-cog mr-3"></i>
+                        Paramètres
+                    </a>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Outils</h3>
+                    <div class="mt-1 space-y-1">
+                        <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <i class="fas fa-envelope mr-3"></i>
+                            Campagnes de relance
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <i class="fas fa-file-contract mr-3"></i>
+                            Modèles de documents
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <i class="fas fa-calendar-alt mr-3"></i>
+                            Calendrier des visites
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Mobile header -->
+        <div class="lg:hidden fixed top-0 left-0 right-0 bg-white shadow-sm h-16 flex items-center px-4 z-30">
+            <button onclick="toggleManagerSidebar()" class="text-gray-600 mr-4">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">R</div>
+                <span class="text-lg font-bold text-gray-800">Recov<span class="text-primary">AI</span></span>
+            </div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="lg:pl-64 pt-16 min-h-screen">
+            <div class="p-4 md:p-8">
+                <!-- Dashboard header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Tableau de bord gestionnaire</h1>
+                        <p class="text-gray-600">Aperçu global de votre activité</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex items-center space-x-4">
+                        <div class="relative">
+                            <button onclick="toggleManagerNotifDropdown()" class="text-gray-600 hover:text-gray-900 relative">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">5</span>
+                            </button>
+                            <div id="manager-notif-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                                <div class="p-3 border-b">
+                                    <h3 class="font-medium text-gray-800">Notifications (5)</h3>
+                                </div>
+                                <div class="divide-y max-h-80 overflow-y-auto">
+                                    <a href="#" class="flex items-start p-3 hover:bg-gray-50">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-euro-sign text-blue-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Paiement reçu</p>
+                                            <p class="text-xs text-gray-500 mt-1">Dossier #D-2023-0456 (Jean Dupont)</p>
+                                            <p class="text-xs text-gray-400 mt-1">Il y a 2 heures</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="flex items-start p-3 hover:bg-gray-50">
+                                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Retard de paiement</p>
+                                            <p class="text-xs text-gray-500 mt-1">Dossier #D-2023-0789 (Marie Lambert)</p>
+                                            <p class="text-xs text-gray-400 mt-1">Ce matin à 09:15</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="flex items-start p-3 hover:bg-gray-50">
+                                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-check-circle text-green-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Plan de paiement accepté</p>
+                                            <p class="text-xs text-gray-500 mt-1">Dossier #D-2023-0123 (SARL Petit)</p>
+                                            <p class="text-xs text-gray-400 mt-1">Hier à 16:45</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="flex items-start p-3 hover:bg-gray-50">
+                                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-times-circle text-red-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Rendez-vous annulé</p>
+                                            <p class="text-xs text-gray-500 mt-1">Avec Paul Martin (#D-2023-0567)</p>
+                                            <p class="text-xs text-gray-400 mt-1">Hier à 14:30</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="flex items-start p-3 hover:bg-gray-50">
+                                        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-file-upload text-purple-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Nouveaux documents</p>
+                                            <p class="text-xs text-gray-500 mt-1">2 fichiers ajoutés par Sarah Dubois</p>
+                                            <p class="text-xs text-gray-400 mt-1">23 juin 18:20</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-3 text-center border-t">
+                                    <a href="#" class="text-sm text-primary hover:underline">Voir toutes les notifications</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profil" class="w-full h-full object-cover">
+                            </div>
+                            <button onclick="toggleManagerProfileDropdown()" class="ml-2 text-gray-600 hover:text-gray-900">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            
+                            <div id="manager-profile-dropdown" class="hidden absolute right-4 mt-40 w-48 bg-white rounded-md shadow-lg z-50 border">
+                                <div class="py-2">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mon profil</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Paramètres</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Historique</a>
+                                    <div class="border-t"></div>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="logout()">Déconnexion</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-primary">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Créances gérées</h3>
+                                <p class="text-2xl font-bold text-gray-800">86</p>
+                            </div>
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-green-500"><i class="fas fa-arrow-up mr-1"></i> 12%</span>
+                                <span class="text-gray-500">vs mois dernier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Recouvrement</h3>
+                                <p class="text-2xl font-bold text-gray-800">78%</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-500">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-green-500"><i class="fas fa-arrow-up mr-1"></i> 8%</span>
+                                <span class="text-gray-500">vs mois dernier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Retards</h3>
+                                <p class="text-2xl font-bold text-gray-800">22%</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-500">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-red-500"><i class="fas fa-arrow-down mr-1"></i> 5%</span>
+                                <span class="text-gray-500">vs mois dernier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Satisfaction</h3>
+                                <p class="text-2xl font-bold text-gray-800">4.2/5</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-green-500"><i class="fas fa-arrow-up mr-1"></i> 0.3</span>
+                                <span class="text-gray-500">vs mois dernier</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Recent Actions -->
+                    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-gray-800">Dernières actions</h2>
+                            <a href="#" class="text-sm text-primary hover:underline">Voir l'historique</a>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                                <div class="mt-1 mr-4">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="font-medium">Paiement enregistré</h3>
+                                    <p class="text-sm text-gray-500 mb-1">Jean Dupont - Facture EDF du 15/06/2023 - 87,42 €</p>
+                                    <p class="text-xs text-gray-400">Aujourd'hui à 14:32 - Virement bancaire</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                                <div class="mt-1 mr-4">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-phone text-blue-500"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="font-medium">Appel effectué</h3>
+                                    <p class="text-sm text-gray-500 mb-1">Marie Lambert - Retard de paiement SFR</p>
+                                    <p class="text-xs text-gray-400">Aujourd'hui à 11:15 - Durée: 8 min 23 sec</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                                <div class="mt-1 mr-4">
+                                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-envelope text-yellow-500"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="font-medium">Email de relance envoyé</h3>
+                                    <p class="text-sm text-gray-500 mb-1">Modèle "Relance courtoise" - 15 destinataires</p>
+                                    <p class="text-xs text-gray-400">Hier à 16:45 - Envoyé via RecovAI</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                                <div class="mt-1 mr-4">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-file-upload text-purple-500"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="font-medium">Documents téléchargés</h3>
+                                    <p class="text-sm text-gray-500 mb-1">SARL Petit - Justificatif de revenus</p>
+                                    <p class="text-xs text-gray-400">Hier à 09:30 - 2 fichiers PDF</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
+                                <div class="mt-1 mr-4">
+                                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-calendar-times text-red-500"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="font-medium">Rendez-vous annulé</h3>
+                                    <p class="text-sm text-gray-500 mb-1">Paul Martin - Visite à domicile</p>
+                                    <p class="text-xs text-gray-400">22 juin à 14:20 - Motif: Reporter</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Tools -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="mb-6">
+                            <h2 class="text-lg font-bold text-gray-800">Outils IA</h2>
+                            <p class="text-sm text-gray-500">Optimisez votre processus de recouvrement</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <button class="w-full flex items-center justify-between p-3 bg-primary/10 border border-primary rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white mr-4">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <span>Analyse comportementale</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-primary"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-500 mr-4">
+                                        <i class="fas fa-chart-pie"></i>
+                                    </div>
+                                    <span>Segmentation des dossiers</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 mr-4">
+                                        <i class="fas fa-mail-bulk"></i>
+                                    </div>
+                                    <span>Campagnes automatisées</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-500 mr-4">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <span>Réponses automatisées</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-500 mr-4">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <span>Prévisions de paiement</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Cases -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-bold text-gray-800">Dossiers récents</h2>
+                        <a href="#" class="text-sm text-primary hover:underline">Tous les dossiers</a>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">N° dossier</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Débiteur</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Créancier</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dernière action</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score IA</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">#D-2023-0456</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-gray-200 mr-3 overflow-hidden">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium">Jean Dupont</div>
+                                                <div class="text-xs text-gray-500">Particulier</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm">EDF</div>
+                                        <div class="text-xs text-gray-500">Électricité</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        87,42 €
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Payé</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Paiement reçu
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mr-2">
+                                                <div class="bg-primary h-2 rounded-full" style="width: 72%"></div>
+                                            </div>
+                                            <span class="text-xs">72/100</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">#D-2023-0789</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-gray-200 mr-3 overflow-hidden">
+                                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium">Marie Lambert</div>
+                                                <div class="text-xs text-gray-500">Particulier</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm">SFR</div>
+                                        <div class="text-xs text-gray-500">Internet/TV</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        52,99 €
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">En retard</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Appel effectué
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mr-2">
+                                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 45%"></div>
+                                            </div>
+                                            <span class="text-xs">45/100</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">#D-2023-0123</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-gray-200 mr-3 overflow-hidden">
+                                                <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium">SARL Petit</div>
+                                                <div class="text-xs text-gray-500">Entreprise</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm">Orange</div>
+                                        <div class="text-xs text-gray-500">Téléphonie</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        432,50 €
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Plan accepté</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Documents reçus
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mr-2">
+                                                <div class="bg-blue-500 h-2 rounded-full" style="width: 68%"></div>
+                                            </div>
+                                            <span class="text-xs">68/100</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">#D-2023-0567</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-gray-200 mr-3 overflow-hidden">
+                                                <img src="https://randomuser.me/api/portraits/men/43.jpg" alt="" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium">Paul Martin</div>
+                                                <div class="text-xs text-gray-500">Particulier</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm">EDF</div>
+                                        <div class="text-xs text-gray-500">Électricité</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        145,67 €
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Action requise</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Rendez-vous annulé
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mr-2">
+                                                <div class="bg-red-500 h-2 rounded-full" style="width: 32%"></div>
+                                            </div>
+                                            <span class="text-xs">32/100</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- AI Recommendations -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-bold text-gray-800">Recommandations de l'IA</h2>
+                        <a href="#" class="text-sm text-primary hover:underline">Actualiser</a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 mr-3">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h3 class="font-medium">Opportunité</h3>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-3">Jean Dupont (#D-2023-0456) a une forte probabilité (82%) d'accepter un plan de paiement pour ses autres créances.</p>
+                            <button class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded hover:bg-blue-200 transition">Proposer un plan</button>
+                        </div>
+                        
+                        <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-500 mr-3">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <h3 class="font-medium">Attention</h3>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-3">Paul Martin (#D-2023-0567) a un score de risque élevé (78%). Envisagez une procédure accélérée.</p>
+                            <button class="text-xs bg-yellow-100 text-yellow-600 px-3 py-1 rounded hover:bg-yellow-200 transition">Évaluer les options</button>
+                        </div>
+                        
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-500 mr-3">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 class="font-medium">Optimisation</h3>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-3">Envoyer des rappels SMS le matin (9h-10h) augmente de 23% les chances de paiement dans la journée.</p>
+                            <button class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded hover:bg-green-200 transition">Planifier</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Virtual Assistant Modal (Hidden by default) -->
+    <div id="virtual-assistant-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md slide-up" style="max-height: 80vh; display: flex; flex-direction: column;">
+            <div class="p-4 bg-primary text-white rounded-t-xl flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary mr-3">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h2 class="font-bold">Assistant RecovAI</h2>
+                </div>
+                <button onclick="hideVirtualAssistant()" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="assistant-chat" class="flex-grow p-4 overflow-y-auto" style="max-height: 50vh;">
+                <div class="flex mb-4">
+                    <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary mr-2">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
+                        <p>Bonjour ! Je suis votre assistant RecovAI. Comment puis-je vous aider aujourd'hui ?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t">
+                <div class="flex">
+                    <input type="text" id="assistant-input" placeholder="Posez votre question..." class="flex-grow px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <button onclick="sendToAssistant()" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-primary/90 transition">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <button onclick="virtualAssistantVoice()" class="mt-2 px-3 py-1 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 flex items-center mx-auto">
+                    <i class="fas fa-microphone mr-2"></i>
+                    Utiliser le mode vocal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Video Modal (Hidden by default) -->
+    <div id="demo-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800">Démonstration RecovAI</h2>
+                <button onclick="hideDemo()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                <div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden">
+                    <div class="w-full h-full flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-play-circle text-5xl text-primary mb-4"></i>
+                            <p class="text-lg font-medium">Démonstration en vidéo de RecovAI</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t text-center">
+                <button class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition">
+                    Demander une démo personnalisée
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate loading
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+        }, 1500);
+        
+        // Page navigation functions
+        function showLogin() {
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-modal').classList.add('flex');
+        }
+        
+        function hideLogin() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('login-modal').classList.remove('flex');
+        }
+        
+        function showSignup() {
+            document.getElementById('signup-modal').classList.remove('hidden');
+            document.getElementById('signup-modal').classList.add('flex');
+        }
+        
+        function hideSignup() {
+            document.getElementById('signup-modal').classList.add('hidden');
+            document.getElementById('signup-modal').classList.remove('flex');
+        }
+        
+        function toggleAuthModal(hideId, showId) {
+            document.getElementById(hideId + '-modal').classList.add('hidden');
+            document.getElementById(hideId + '-modal').classList.remove('flex');
+            
+            document.getElementById(showId + '-modal').classList.remove('hidden');
+            document.getElementById(showId + '-modal').classList.add('flex');
+        }
+        
+        function showDemo() {
+            document.getElementById('demo-modal').classList.remove('hidden');
+            document.getElementById('demo-modal').classList.add('flex');
+        }
+        
+        function hideDemo() {
+            document.getElementById('demo-modal').classList.add('hidden');
+            document.getElementById('demo-modal').classList.remove('flex');
+        }
+        
+        function showFeatures() {
+            document.getElementById('features-section').classList.remove('hidden');
+            window.scrollTo({
+                top: document.getElementById('features-section').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+        
+        function hideFeatures() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        function virtualAssistant() {
+            document.getElementById('virtual-assistant-modal').classList.remove('hidden');
+            document.getElementById('virtual-assistant-modal').classList.add('flex');
+        }
+        
+        function hideVirtualAssistant() {
+            document.getElementById('virtual-assistant-modal').classList.add('hidden');
+            document.getElementById('virtual-assistant-modal').classList.remove('flex');
+        }
+        
+        function virtualAssistantVoice() {
+            alert("Mode vocal activé. Veuillez autoriser l'accès au microphone.");
+            // In a real app, you would implement voice recognition here
+        }
+        
+        function sendToAssistant() {
+            const input = document.getElementById('assistant-input');
+            const chat = document.getElementById('assistant-chat');
+            
+            if (input.value.trim() === '') return;
+            
+            // Add user message
+            chat.innerHTML += `
+                <div class="flex justify-end mb-4">
+                    <div class="bg-primary text-white rounded-lg p-3 max-w-xs">
+                        <p>${input.value}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const responses = [
+                    "Je peux vous aider avec vos questions concernant vos créances, paiements ou documents requis.",
+                    "Pour accéder à vos factures, allez dans la section 'Mes créances' de votre tableau de bord.",
+                    "Vous pouvez régler vos paiements en ligne par carte bancaire, virement ou prélèvement SEPA.",
+                    "Si vous rencontrez des difficultés de paiement, vous pouvez demander un plan d'échelonnement.",
+                    "Pour télécharger un duplicata de facture, rendez-vous dans vos documents et sélectionnez la facture concernée."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                
+                chat.innerHTML += `
+                    <div class="flex mb-4">
+                        <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary mr-2">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
+                            <p>${randomResponse}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Scroll to bottom
+                chat.scrollTop = chat.scrollHeight;
+            }, 1000);
+            
+            input.value = '';
+            
+            // Scroll to bottom
+            chat.scrollTop = chat.scrollHeight;
+        }
+        
+        // Debtor dashboard functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+        
+        function toggleNotifDropdown() {
+            const dropdown = document.getElementById('notif-dropdown');
+            dropdown.classList.toggle('hidden');
+            
+            // Hide profile dropdown if open
+            document.getElementById('profile-dropdown').classList.add('hidden');
+        }
+        
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.classList.toggle('hidden');
+            
+            // Hide notif dropdown if open
+            document.getElementById('notif-dropdown').classList.add('hidden');
+        }
+        
+        function logout() {
+            document.getElementById('debtor-dashboard').classList.add('hidden');
+            document.getElementById('homepage').classList.remove('hidden');
+            
+            // Hide any dropdowns
+            document.getElementById('notif-dropdown').classList.add('hidden');
+            document.getElementById('profile-dropdown').classList.add('hidden');
+        }
+        
+        // Manager dashboard functions
+        function toggleManagerSidebar() {
+            const sidebar = document.getElementById('manager-sidebar');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+        
+        function toggleManagerNotifDropdown() {
+            const dropdown = document.getElementById('manager-notif-dropdown');
+            dropdown.classList.toggle('hidden');
+            
+            // Hide profile dropdown if open
+            document.getElementById('manager-profile-dropdown').classList.add('hidden');
+        }
+        
+        function toggleManagerProfileDropdown() {
+            const dropdown = document.getElementById('manager-profile-dropdown');
+            dropdown.classList.toggle('hidden');
+            
+            // Hide notif dropdown if open
+            document.getElementById('manager-notif-dropdown').classList.add('hidden');
+        }
+        
+        // Login simulation (for demo purposes)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate debtor login from homepage
+            const homepageInput = document.querySelector('#homepage input[type="text"]');
+            const homepageSubmit = homepageInput.nextElementSibling;
+            
+            homepageSubmit.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (homepageInput.value.toLowerCase() === 'debiteur') {
+                    document.getElementById('homepage').classList.add('hidden');
+                    document.getElementById('debtor-dashboard').classList.remove('hidden');
+                } else if (homepageInput.value.toLowerCase() === 'gestionnaire') {
+                    document.getElementById('homepage').classList.add('hidden');
+                    document.getElementById('manager-dashboard').classList.remove('hidden');
+                } else {
+                    document.getElementById('avatar-message').innerHTML = '<p class="text-gray-700">Identifiant non reconnu. Essayez "debiteur" ou "gestionnaire" pour la démo.</p>';
+                }
+            });
+            
+            // Allow pressing Enter in the homepage input
+            homepageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    homepageSubmit.click();
+                }
+            });
+            
+            // Simulate login from modal
+            const loginForm = document.querySelector('#login-modal form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const username = this.querySelector('input[type="text"]').value;
+                    
+                    if (username.toLowerCase() === 'debiteur') {
+                        hideLogin();
+                        document.getElementById('homepage').classList.add('hidden');
+                        document.getElementById('debtor-dashboard').classList.remove('hidden');
+                    } else if (username.toLowerCase() === 'gestionnaire') {
+                        hideLogin();
+                        document.getElementById('homepage').classList.add('hidden');
+                        document.getElementById('manager-dashboard').classList.remove('hidden');
+                    } else {
+                        alert("Pour la démo, utilisez 'debiteur' ou 'gestionnaire' comme identifiant.");
+                    }
+                });
+            }
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                const notifDropdown = document.getElementById('notif-dropdown');
+                const profileDropdown = document.getElementById('profile-dropdown');
+                const managerNotifDropdown = document.getElementById('manager-notif-dropdown');
+                const managerProfileDropdown = document.getElementById('manager-profile-dropdown');
+                
+                if (!e.target.closest('.relative') && notifDropdown && !notifDropdown.classList.contains('hidden')) {
+                    notifDropdown.classList.add('hidden');
+                }
+                
+                if (!e.target.closest('.flex.items-center') && profileDropdown && !profileDropdown.classList.contains('hidden')) {
+                    profileDropdown.classList.add('hidden');
+                }
+                
+                if (!e.target.closest('.relative') && managerNotifDropdown && !managerNotifDropdown.classList.contains('hidden')) {
+                    managerNotifDropdown.classList.add('hidden');
+                }
+                
+                if (!e.target.closest('.flex.items-center') && managerProfileDropdown && !managerProfileDropdown.classList.contains('hidden')) {
+                    managerProfileDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Allow Enter in assistant input
+            const assistantInput = document.getElementById('assistant-input');
+            if (assistantInput) {
+                assistantInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendToAssistant();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
