@@ -1,717 +1,908 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion - RecovAI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-    body {
-      background: url('/mnt/data/2bae6070-f912-41dd-9834-233a40a3df5f.png') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .fade-in {
-      animation: fadeIn 1.5s ease-in-out both;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecovAI - Gestion Intelligente de Créances</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        .gradient-overlay {
+            background: linear-gradient(135deg, rgba(5, 15, 40, 0.9) 0%, rgba(30, 50, 100, 0.7) 100%);
+        }
+    </style>
 </head>
-<body class="flex flex-col justify-center items-center text-white min-h-screen">
-  <!-- Bloc de connexion -->
-  <div class="bg-white bg-opacity-90 text-black p-8 rounded-xl shadow-2xl w-full max-w-md fade-in">
-    <h2 class="text-2xl font-bold mb-6 text-center">Connexion utilisateur</h2>
-    <form class="space-y-4">
-      <input type="email" placeholder="Email" class="w-full p-2 rounded border border-gray-300">
-      <input type="password" placeholder="Mot de passe" class="w-full p-2 rounded border border-gray-300">
-      <div class="flex justify-between">
-        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Se connecter</button>
-        <button type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Créer un compte</button>
-      </div>
-    </form>
-    <p class="mt-4 text-xs text-gray-700">Conforme RGPD - <a href="#" class="underline">Mentions légales</a></p>
-  </div>
+<body class="bg-gray-50 font-sans">
+    <!-- Header Navigation -->
+    <header class="fixed w-full bg-white shadow-md z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-robot text-blue-600 text-2xl"></i>
+                <span class="text-xl font-bold text-blue-900">RecovAI</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#features" class="text-gray-700 hover:text-blue-600">Fonctionnalités</a>
+                <a href="#testimonials" class="text-gray-700 hover:text-blue-600">Témoignages</a>
+                <a href="#pricing" class="text-gray-700 hover:text-blue-600">Tarifs</a>
+                <a href="#contact" class="text-gray-700 hover:text-blue-600">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="loginBtn" class="px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">Connexion</button>
+                <button id="registerBtn" class="hidden md:block px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">Créer un compte</button>
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
 
-  <!-- Femme IA à droite -->
-  <div class="fixed bottom-12 right-6 hidden md:block fade-in">
-    <div class="flex flex-col items-center text-center">
-      <img src="/mnt/data/c4cfdf5e-10b0-4b0e-99c1-bfd4b2770746.png" alt="Femme IA" class="w-40 md:w-60 rounded-full shadow-lg">
-      <p class="mt-2 text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded-full">Bonjour ! Je suis votre assistante IA.</p>
-    </div>
-  </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil du débiteur - RecovAI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 text-gray-900 font-sans">
-  <header class="bg-blue-900 text-white p-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold">RecovAI - Profil du débiteur</h1>
-    <a href="login.html" class="text-sm underline">Déconnexion</a>
-  </header>
+    <!-- Hero Section with AI Assistant -->
+    <section class="relative h-screen flex items-center bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+        <div class="absolute inset-0 gradient-overlay"></div>
+        <div class="container mx-auto px-4 z-10 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 text-white mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Gestion intelligente des créances assistée par IA</h1>
+                <p class="text-xl mb-8">Optimisez votre recouvrement avec notre technologie avancée et notre assistance humaine</p>
+                <div class="flex space-x-4">
+                    <button class="px-6 py-3 bg-blue-600 rounded-lg font-medium hover:bg-blue-700 transition">Démarrer l'essai gratuit</button>
+                    <button class="px-6 py-3 bg-transparent border-2 border-white rounded-lg font-medium hover:bg-white hover:text-blue-900 transition">Voir la démo</button>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative w-64 h-64 md:w-80 md:h-80 bg-white rounded-full overflow-hidden shadow-2xl floating">
+                    <img src="https://cdn4.iconfinder.com/data/icons/business-avatar/500/Avatar_woman_business_person_manager_HR_2-512.png" alt="Assistante IA" class="w-full h-full object-cover">
+                    <div id="assistantSpeech" class="absolute -top-20 -left-10 w-64 bg-white text-gray-800 p-3 rounded-lg shadow-md opacity-0 transition-opacity duration-500">
+                        <p class="text-sm">Bonjour et bienvenue sur RecovAI, votre assistante de gestion de créances. Veuillez vous connecter.</p>
+                        <div class="absolute -bottom-3 left-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <main class="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-md rounded-lg">
-    <div class="flex flex-col md:flex-row items-start gap-8">
-      <!-- Section photo et avatar -->
-      <div class="w-full md:w-1/3 text-center">
-        <img id="photo-profil" src="https://via.placeholder.com/150" alt="Photo de profil" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
-        <input type="file" accept="image/*" class="block mx-auto mb-4 text-sm" onchange="previewImage(event)">
-        <label for="avatar-select" class="block text-left font-semibold">Choisir un avatar :</label>
-        <select id="avatar-select" class="w-full mt-1 border rounded p-2 text-sm">
-          <option value="">-- Sélectionner --</option>
-          <option value="europeen">Style européen</option>
-          <option value="africain">Style africain</option>
-          <option value="asiatique">Style asiatique</option>
-          <option value="latino">Style latino-américain</option>
-        </select>
-        <button onclick="changerAvatar()" class="mt-3 px-4 py-2 bg-blue-600 text-white rounded text-sm">Appliquer</button>
-      </div>
-
-      <!-- Infos personnelles -->
-      <div class="w-full md:w-2/3">
-        <h2 class="text-xl font-semibold mb-4">Informations personnelles</h2>
-        <form class="grid grid-cols-1 gap-4">
-          <input type="text" placeholder="Nom complet" class="p-2 border rounded">
-          <input type="email" placeholder="Email" class="p-2 border rounded">
-          <input type="tel" placeholder="Téléphone" class="p-2 border rounded">
-          <input type="text" placeholder="Adresse postale" class="p-2 border rounded">
-          <input type="text" placeholder="Montant dû (€)" class="p-2 border rounded">
-          <select class="p-2 border rounded">
-            <option>État du dossier</option>
-            <option value="en_attente">En attente</option>
-            <option value="en_traitement">En traitement</option>
-            <option value="cloture">Clôturé</option>
-          </select>
-          <button type="submit" class="mt-2 px-4 py-2 bg-green-600 text-white rounded">Enregistrer les modifications</button>
-        </form>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    function previewImage(event) {
-      const reader = new FileReader();
-      reader.onload = function () {
-        document.getElementById('photo-profil').src = reader.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-
-    function changerAvatar() {
-      const avatar = document.getElementById('avatar-select').value;
-      const photo = document.getElementById('photo-profil');
-      switch (avatar) {
-        case 'europeen':
-          photo.src = 'avatar_europeen.png'; break;
-        case 'africain':
-          photo.src = 'avatar_africain.png'; break;
-        case 'asiatique':
-          photo.src = 'avatar_asiatique.png'; break;
-        case 'latino':
-          photo.src = 'avatar_latino.png'; break;
-        default:
-          break;
-      }
-    }
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil du débiteur - RecovAI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 font-sans text-gray-800">
-  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
-      <h1 class="text-2xl font-bold">RecovAI</h1>
-    </div>
-    <span class="text-sm">Espace débiteur</span>
-  </header>
-
-  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
-    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
-
-    <!-- Section Photo de profil -->
-    <div class="flex items-center space-x-6 mb-6">
-      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
-      <div>
-        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
-        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
-        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
-      </div>
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Connexion</h2>
+                    <button id="closeLoginModal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 mb-2">Adresse email</label>
+                        <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="password" class="block text-gray-700 mb-2">Mot de passe</label>
+                        <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition mb-4">Se connecter</button>
+                    <div class="text-center">
+                        <a href="#" class="text-blue-600 hover:underline">Mot de passe oublié ?</a>
+                    </div>
+                </form>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 rounded-b-lg border-t">
+                <p class="text-center text-gray-600">Pas encore de compte ? <a id="switchToRegister" href="#" class="text-blue-600 hover:underline">S'inscrire</a></p>
+            </div>
+        </div>
     </div>
 
-    <!-- Section Choix d'avatar -->
-    <div class="mb-6">
-      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
-      <select id="avatarOrigin" class="block w-full p-2 border border-gray-300 rounded">
-        <option value="">-- Sélectionnez --</option>
-        <option value="africain">Afrique (Homme/Femme)</option>
-        <option value="asiatique">Asie (Homme/Femme)</option>
-        <option value="europeen">Europe (Homme/Femme)</option>
-        <option value="amerique">Amérique (Homme/Femme)</option>
-        <option value="senior">Personne âgée</option>
-        <option value="autre">Autre</option>
-      </select>
-    </div>
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Nos fonctionnalités clés</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Des outils puissants pour une gestion optimale du recouvrement de créances</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 - Espace Débiteur -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-user-tie text-blue-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Espace Débiteur</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Profil complet avec visualisation des créances, calendrier des échéances et alertes personnalisées.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Montant dû et paiements restants
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Téléversement de justificatifs
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Mises à jour en temps réel
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 - Tableau de bord -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-chart-line text-blue-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Tableau de bord gestionnaire</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Analyse approfondie des dettes en cours avec indicateurs clés de performance et historique des relances.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Solde global et délais de paiement
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Performance des relances
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Gestion multi-utilisateurs
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 - Automatisations -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-robot text-blue-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Automatisations intelligentes</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Relances automatisées, paiements intégrés et rapprochement bancaire en toute simplicité.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Email, SMS et courrier
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Paiements CB et virements SEPA
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Rapprochement automatique
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Infos personnelles -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm">Nom</label>
-        <input type="text" value="Dupont" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Prénom</label>
-        <input type="text" value="Jean" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Email</label>
-        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Téléphone</label>
-        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
-      </div>
-      <div class="md:col-span-2">
-        <label class="block text-sm">Adresse</label>
-        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Montant dû (€)</label>
-        <input type="text" value="450.00" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Statut du dossier</label>
-        <select class="w-full border rounded p-2">
-          <option value="attente">En attente</option>
-          <option value="relancé">Relancé</option>
-          <option value="réglé">Réglé</option>
-        </select>
-      </div>
-    </div>
+    <!-- Debtor Profile Section -->
+    <section id="debtorProfile" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/3 mb-10 md:mb-0 flex justify-center">
+                    <div class="relative w-64 h-64 bg-white rounded-xl shadow-lg overflow-hidden border-2 border-blue-100">
+                        <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Profil Débiteur" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-blue-600 text-white p-3 text-center">
+                            <p class="font-semibold">Jean Dupont</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3 md:pl-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Espace Débiteur Complet</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <h3 class="text-lg font-semibold text-blue-600 mb-3">Informations personnelles</h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <span class="text-gray-500 w-24">Nom:</span>
+                                    <span class="font-medium">Dupont</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-gray-500 w-24">Prénom:</span>
+                                    <span class="font-medium">Jean</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-gray-500 w-24">Email:</span>
+                                    <span class="font-medium">jean.dupont@example.com</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-gray-500 w-24">Téléphone:</span>
+                                    <span class="font-medium">+33 6 12 34 56 78</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-blue-600 mb-3">Détails du dossier</h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <span class="text-gray-500 w-24">N° Dossier:</span>
+                                    <span class="font-medium">RCV-2023-1542</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-gray-500 w-24">Nationalité:</span>
+                                    <span class="font-medium">Française</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-gray-500 w-24">Naissance:</span>
+                                    <span class="font-medium">15/03/1985</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-gray-500 w-24">Créanciers:</span>
+                                    <div>
+                                        <span class="inline-block bg-gray-100 px-2 py-1 rounded text-sm mr-1 mb-1">EDF</span>
+                                        <span class="inline-block bg-gray-100 px-2 py-1 rounded text-sm mr-1 mb-1">SFR</span>
+                                        <span class="inline-block bg-gray-100 px-2 py-1 rounded text-sm mr-1 mb-1">Orange</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-blue-600 mb-4">Situation financière</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="text-gray-500 text-sm mb-1">Montant total dû</p>
+                                <p class="text-2xl font-bold text-red-600">1,245.80 €</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="text-gray-500 text-sm mb-1">Prochaine échéance</p>
+                                <p class="text-2xl font-bold text-blue-600">15/06/2023</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="text-gray-500 text-sm mb-1">Délai restant</p>
+                                <p class="text-2xl font-bold text-green-600">12 jours</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" checked>
+                                <span class="ml-2 text-gray-700">Recevoir des alertes par email</span>
+                            </label>
+                            <label class="flex items-center mt-2">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                                <span class="ml-2 text-gray-700">Recevoir des alertes par SMS</span>
+                            </label>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition mr-3">
+                                <i class="fas fa-upload mr-2"></i>Téléverser un document
+                            </button>
+                            <button class="px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
+                                <i class="fas fa-history mr-2"></i>Historique des paiements
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="mt-6 text-right">
-      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
-    </div>
-  </main>
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Tableau de bord gestionnaire</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500">Dettes en cours</p>
+                            <p class="text-3xl font-bold mt-2">42</p>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-file-invoice-dollar text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-green-600">
+                            <i class="fas fa-arrow-up mr-1"></i> 12.5% depuis le mois dernier
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500">Montant recouvré</p>
+                            <p class="text-3xl font-bold mt-2">25,840 €</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-euro-sign text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-green-600">
+                            <i class="fas fa-arrow-up mr-1"></i> 8.3% depuis le mois dernier
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500">Délai moyen</p>
+                            <p class="text-3xl font-bold mt-2">34 jours</p>
+                        </div>
+                        <div class="bg-orange-100 p-3 rounded-full">
+                            <i class="fas fa-clock text-orange-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-red-600">
+                            <i class="fas fa-arrow-down mr-1"></i> 4 jours de plus
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500">Taux de succès</p>
+                            <p class="text-3xl font-bold mt-2">76%</p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-percent text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-green-600">
+                            <i class="fas fa-arrow-up mr-1"></i> 3.2% depuis le mois dernier
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div class="p-6 border-b">
+                    <h3 class="text-xl font-semibold text-gray-800">Historique des relances</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Débiteur</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/42.jpg" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">Marie Lambert</div>
+                                            <div class="text-sm text-gray-500">RCV-2023-1678</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">548.90 €</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Email</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">03/06/2023</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Payé</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/23.jpg" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">Thomas Moreau</div>
+                                            <div class="text-sm text-gray-500">RCV-2023-1549</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">1,245.30 €</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Courrier</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">28/05/2023</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">En attente</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/42.jpg" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">Jean Dupont</div>
+                                            <div class="text-sm text-gray-500">RCV-2023-1542</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">780.50 €</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">SMS</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">25/05/2023</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">En retard</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6 border-b">
+                        <h3 class="text-xl font-semibold text-gray-800">Répartition des créances</h3>
+                    </div>
+                    <div class="p-6">
+                        <canvas id="debtChart" height="250"></canvas>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6 border-b">
+                        <h3 class="text-xl font-semibold text-gray-800">Performance des relances</h3>
+                    </div>
+                    <div class="p-6">
+                        <canvas id="performanceChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <footer class="bg-blue-900 text-white text-center p-4 mt-10 text-sm">
-    <p>NeuroCred Solutions - 39 Rue des Innovateurs, 92110 Clichy, France</p>
-    <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
-    <p class="text-gray-300">© 2025 RecovAI - Tous droits réservés</p>
-  </footer>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil du débiteur - RecovAI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script>
-    function updateAvatar() {
-      const select = document.getElementById('avatarOrigin');
-      const profilePic = document.getElementById('profilePic');
-      const value = select.value;
-      const base = '/mnt/data/';
-      const avatars = {
-        africain: 'avatar_africain_homme.jpg',
-        asiatique: 'avatar_asiatique_femme.jpg',
-        europeen: 'avatar_europeen_homme.jpg',
-        amerique: 'avatar_amerique_femme.jpg',
-        senior: 'avatar_senior_femme.jpg',
-        autre: 'avatar_generique.jpg'
-      };
-      if (avatars[value]) {
-        profilePic.src = base + avatars[value];
-      }
-    }
-  </script>
-</head>
-<body class="bg-gray-100 font-sans text-gray-800">
-  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
-      <h1 class="text-2xl font-bold">RecovAI</h1>
-    </div>
-    <span class="text-sm">Espace débiteur</span>
-  </header>
+    <!-- AI Assistant Section -->
+    <section id="aiAssistant" class="py-20 bg-blue-900 text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Assistance IA intégrée</h2>
+                <p class="text-xl max-w-2xl mx-auto">Une expérience personnalisée avec notre intelligence artificielle dédiée au recouvrement</p>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <div class="relative bg-blue-800 rounded-xl p-8 shadow-lg">
+                        <div class="flex items-center mb-6">
+                            <div class="bg-white bg-opacity-10 p-3 rounded-full mr-4">
+                                <i class="fas fa-robot text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">Clara - Votre assistante RecovAI</h3>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="bg-blue-700 rounded-lg p-4 mb-3 w-3/4">
+                                <p>Bonjour, je peux vous aider à gérer vos créances ou répondre à vos questions.</p>
+                            </div>
+                            
+                            <div class="bg-white text-blue-900 rounded-lg p-4 ml-auto w-3/4">
+                                <p>Quels sont mes paiements en retard ?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-700 rounded-lg p-4 w-3/4 mb-6">
+                            <p>Vous avez 2 paiements en retard : 245,30€ à Orange et 548,90€ à EDF. Souhaitez-vous établir un échéancier ?</p>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+                                Échéancier
+                            </button>
+                            <button class="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-gray-100 transition">
+                                Options de paiement
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="absolute -top-6 -right-6 bg-blue-600 p-4 rounded-full">
+                            <i class="fas fa-headset text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Personnalisation de l'assistant</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-gray-300 mb-2">Genre</label>
+                                <div class="flex space-x-3">
+                                    <button class="px-4 py-2 bg-blue-700 rounded-lg hover:bg-blue-600 transition">Femme</button>
+                                    <button class="px-4 py-2 bg-blue-800 text-gray-400 rounded-lg hover:bg-blue-700 transition">Homme</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-2">Voix</label>
+                                <select class="w-full bg-blue-800 border border-blue-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>Française - Naturelle</option>
+                                    <option>Anglaise - Claire</option>
+                                    <option>Espagnole - Douce</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-300 mb-2">Style de communication</label>
+                            <select class="w-full bg-blue-800 border border-blue-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Professionnel</option>
+                                <option>Convivial</option>
+                                <option>Empathique</option>
+                                <option>Formel</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-300 mb-2">Score prédictif de paiement</label>
+                            <div class="bg-blue-800 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span>Jean Dupont</span>
+                                    <span class="font-semibold">78%</span>
+                                </div>
+                                <div class="w-full bg-blue-700 rounded-full h-2.5">
+                                    <div class="bg-green-400 h-2.5 rounded-full" style="width: 78%"></div>
+                                </div>
+                                <p class="text-sm text-gray-300 mt-2">Probabilité élevée de paiement dans les 30 jours</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Notation satisfaction</h3>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <i class="fas fa-star text-yellow-400 text-xl"></i>
+                            <i class="fas fa-star text-yellow-400 text-xl"></i>
+                            <i class="fas fa-star text-yellow-400 text-xl"></i>
+                            <i class="fas fa-star text-yellow-400 text-xl"></i>
+                            <i class="fas fa-star text-gray-400 text-xl"></i>
+                        </div>
+                        <textarea class="w-full bg-blue-800 border border-blue-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3" rows="3" placeholder="Votre feedback..."></textarea>
+                        <button class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition">Envoyer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
-    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
+    <!-- Integrations Section -->
+    <section id="integrations" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Intégrations & API</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Connectez RecovAI à votre écosystème existant</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
+                <div class="flex items-center justify-center p-6 bg-gray-50 rounded-xl hover:shadow-md transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/QuickBooks_logo.svg/1200px-QuickBooks_logo.svg.png" alt="QuickBooks" class="h-12 object-contain">
+                </div>
+                <div class="flex items-center justify-center p-6 bg-gray-50 rounded-xl hover:shadow-md transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/1/1c/Logo_Sage.svg/1200px-Logo_Sage.svg.png" alt="Sage" class="h-12 object-contain">
+                </div>
+                <div class="flex items-center justify-center p-6 bg-gray-50 rounded-xl hover:shadow-md transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png" alt="Stripe" class="h-8 object-contain">
+                </div>
+                <div class="flex items-center justify-center p-6 bg-gray-50 rounded-xl hover:shadow-md transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Mastercard.svg/1200px-Mastercard.svg.png" alt="Mastercard" class="h-12 object-contain">
+                </div>
+                <div class="flex items-center justify-center p-6 bg-gray-50 rounded-xl hover:shadow-md transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/SEPA-Logo.svg/1200px-SEPA-Logo.svg.png" alt="SEPA" class="h-12 object-contain">
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row bg-blue-50 rounded-xl overflow-hidden">
+                <div class="md:w-1/2 p-8 md:p-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Accédez à notre API complète</h3>
+                    <p class="text-gray-600 mb-6">Connectez RecovAI directement à votre système interne avec notre API robuste et bien documentée.</p>
+                    <div class="mb-6">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-code text-blue-600"></i>
+                            </div>
+                            <p class="font-medium">Documentation complète</p>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-shield-alt text-blue-600"></i>
+                            </div>
+                            <p class="font-medium">Authentification sécurisée</p>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-headset text-blue-600"></i>
+                            </div>
+                            <p class="font-medium">Support technique dédié</p>
+                        </div>
+                    </div>
+                    <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Accéder à la documentation API</button>
+                </div>
+                <div class="md:w-1/2 bg-gray-800 p-8 flex items-center justify-center">
+                    <pre class="text-green-400 text-sm overflow-x-auto"><code>
+// Exemple d'appel API
+fetch('https://api.recovai.com/v1/debts', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  }
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Dettes:', data);
+})
+.catch(error => {
+  console.error('Erreur:', error);
+});
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Section Photo de profil -->
-    <div class="flex items-center space-x-6 mb-6">
-      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
-      <div>
-        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
-        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
-        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
-      </div>
-    </div>
+    <!-- Security Section -->
+    <section id="security" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Sécurité et performance</h2>
+                <p class="text-xl text-gray-600">Nous prenons la protection de vos données aussi sérieusement que notre métier</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white rounded-xl shadow-md p-8 text-center">
+                    <div class="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-lock text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Données chiffrées</h3>
+                    <p class="text-gray-600">Toutes vos informations sont cryptées en transit et au repos avec des algorithmes de pointe.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-8 text-center">
+                    <div class="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-shield-alt text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Conforme RGPD</h3>
+                    <p class="text-gray-600">Nous nous conformons strictement au RGPD et aux réglementations locales sur la protection des données.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-8 text-center">
+                    <div class="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-mobile-alt text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Responsive</h3>
+                    <p class="text-gray-600">Une application optimisée pour tous vos appareils, du bureau au terrain.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="p-6 border-b">
+                    <h3 class="text-xl font-semibold text-gray-800">Nos certifications</h3>
+                </div>
+                <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="flex flex-col items-center p-4 border rounded-lg">
+                        <img src="https://www.cnil.fr/sites/all/themes/custom/cnil/logo.svg" alt="CNIL" class="h-10 mb-3">
+                        <p class="text-sm text-gray-600 text-center">Déclaration CNIL n°2156793</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 border rounded-lg">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/ISO_Certified_Icon.svg/2048px-ISO_Certified_Icon.svg.png" alt="ISO 27001" class="h-10 mb-3">
+                        <p class="text-sm text-gray-600 text-center">ISO 27001 certifié</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 border rounded-lg">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Payment_Card_Industry_Security_Standards_Council_Logo.svg/1200px-Payment_Card_Industry_Security_Standards_Council_Logo.svg.png" alt="PCI DSS" class="h-10 mb-3">
+                        <p class="text-sm text-gray-600 text-center">Niveau 1 PCI DSS</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 border rounded-lg">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/HDS_Logo.svg/1200px-HDS_Logo.svg.png" alt="HDS" class="h-10 mb-3">
+                        <p class="text-sm text-gray-600 text-center">Hébergeur de Données de Santé</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Section Choix d'avatar -->
-    <div class="mb-6">
-      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
-      <select id="avatarOrigin" onchange="updateAvatar()" class="block w-full p-2 border border-gray-300 rounded">
-        <option value="">-- Sélectionnez --</option>
-        <option value="africain">Afrique (Homme/Femme)</option>
-        <option value="asiatique">Asie (Homme/Femme)</option>
-        <option value="europeen">Europe (Homme/Femme)</option>
-        <option value="amerique">Amérique (Homme/Femme)</option>
-        <option value="senior">Personne âgée</option>
-        <option value="autre">Autre</option>
-      </select>
-    </div>
+    <!-- CTA Section -->
+    <section class="py-16 bg-blue-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Prêt à révolutionner votre gestion de créances ?</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Rejoignez des centaines de professionnels qui font confiance à RecovAI pour optimiser leur recouvrement.</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button class="px-8 py-3 bg-white text-blue-800 font-medium rounded-lg hover:bg-gray-100 transition">Démarrer l'essai gratuit</button>
+                <button class="px-8 py-3 bg-transparent border-2 border-white font-medium rounded-lg hover:bg-white hover:text-blue-800 transition">Voir une démo</button>
+            </div>
+        </div>
+    </section>
 
-    <!-- Infos personnelles -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm">Nom</label>
-        <input type="text" value="Dupont" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Prénom</label>
-        <input type="text" value="Jean" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Email</label>
-        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Téléphone</label>
-        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
-      </div>
-      <div class="md:col-span-2">
-        <label class="block text-sm">Adresse</label>
-        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Montant dû (€)</label>
-        <input type="text" value="450.00" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Statut du dossier</label>
-        <select class="w-full border rounded p-2">
-          <option value="attente">En attente</option>
-          <option value="relancé">Relancé</option>
-          <option value="réglé">Réglé</option>
-        </select>
-      </div>
-    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-blue-400 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold">RecovAI</span>
+                    </div>
+                    <p class="text-gray-400">L'assistant intelligent pour une gestion optimale des créances et du recouvrement.</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Produit</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fonctionnalités</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Tarifs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">API</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sécurité</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Ressources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400">15 Rue du Commerce, 75001 Paris, France</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt text-blue-400 mr-2"></i>
+                            <span class="text-gray-400">+33 1 23 45 67 89</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-blue-400 mr-2"></i>
+                            <span class="text-gray-400">contact@recovai.fr</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 RecovAI. Tous droits réservés.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">Mentions légales</a>
+                    <a href="#" class="text-gray-400 hover:text-white">CGU</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Politique de confidentialité</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    <div class="mt-6 text-right">
-      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
-    </div>
-  </main>
-
-  <footer class="bg-blue-900 text-white text-center p-4 mt-10 text-sm">
-    <p>NeuroCred Solutions - 39 Rue des Innovateurs, 92110 Clichy, France</p>
-    <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
-    <p class="text-gray-300">© 2025 RecovAI - Tous droits réservés</p>
-  </footer>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil du débiteur - RecovAI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script>
-    function updateAvatar() {
-      const select = document.getElementById('avatarOrigin');
-      const profilePic = document.getElementById('profilePic');
-      const value = select.value;
-      const base = '/mnt/data/';
-      const avatars = {
-        africain: 'A_digital_photograph_features_a_portrait_of_a_youn.png',
-        africain_femme: 'A_digital_photograph_headshot_features_a_young_Afr.png',
-        asiatique: 'A_digital_photograph_portrait_features_a_young_Eas.png',
-        asiatique_femme: 'A_high-resolution_digital_photograph_features_a_lo.png',
-        europeen: 'A_high-resolution_digital_photograph_features_a_Ca.png',
-        europeenne: 'A_high-resolution_digital_photograph_features_a_po.png',
-        amerique: 'avatar_amerique_femme.jpg',
-        senior: 'avatar_senior_femme.jpg',
-        autre: 'avatar_generique.jpg'
-      };
-      if (avatars[value]) {
-        profilePic.src = base + avatars[value];
-      }
-    }
-  </script>
-</head>
-<body class="bg-gray-100 font-sans text-gray-800">
-  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
-      <h1 class="text-2xl font-bold">RecovAI</h1>
-    </div>
-    <span class="text-sm">Espace débiteur</span>
-  </header>
-
-  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
-    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
-
-    <!-- Section Photo de profil -->
-    <div class="flex items-center space-x-6 mb-6">
-      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
-      <div>
-        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
-        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
-        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
-      </div>
-    </div>
-
-    <!-- Section Choix d'avatar -->
-    <div class="mb-6">
-      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
-      <select id="avatarOrigin" onchange="updateAvatar()" class="block w-full p-2 border border-gray-300 rounded">
-        <option value="">-- Sélectionnez --</option>
-        <option value="africain">Afrique (Homme)</option>
-        <option value="africain_femme">Afrique (Femme)</option>
-        <option value="asiatique">Asie (Homme)</option>
-        <option value="asiatique_femme">Asie (Femme)</option>
-        <option value="europeen">Europe (Homme)</option>
-        <option value="europeenne">Europe (Femme)</option>
-        <option value="amerique">Amérique (Femme)</option>
-        <option value="senior">Personne âgée</option>
-        <option value="autre">Autre</option>
-      </select>
-    </div>
-
-    <!-- Infos personnelles -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm">Nom</label>
-        <input type="text" value="Dupont" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Prénom</label>
-        <input type="text" value="Jean" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Email</label>
-        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Téléphone</label>
-        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
-      </div>
-      <div class="md:col-span-2">
-        <label class="block text-sm">Adresse</label>
-        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Montant dû (€)</label>
-        <input type="text" value="450.00" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Statut du dossier</label>
-        <select class="w-full border rounded p-2">
-          <option value="attente">En attente</option>
-          <option value="relancé">Relancé</option>
-          <option value="réglé">Réglé</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="mt-6 text-right">
-      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
-    </div>
-  </main>
-
-  <footer class="bg-blue-900 text-white text-center p-4 mt-10 text-sm">
-    <p>NeuroCred Solutions - 39 Rue des Innovateurs, 92110 Clichy, France</p>
-    <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
-    <p class="text-gray-300">© 2025 RecovAI - Tous droits réservés</p>
-  </footer>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil du débiteur - RecovAI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script>
-    function updateAvatar() {
-      const select = document.getElementById('avatarOrigin');
-      const profilePic = document.getElementById('profilePic');
-      const value = select.value;
-      const base = '/mnt/data/';
-      const avatars = {
-        africain: 'A_digital_photograph_features_a_portrait_of_a_youn.png',
-        africain_femme: 'A_digital_photograph_headshot_features_a_young_Afr.png',
-        asiatique: 'A_digital_photograph_portrait_features_a_young_Eas.png',
-        asiatique_femme: 'A_high-resolution_digital_photograph_features_a_lo.png',
-        europeen: 'A_high-resolution_digital_photograph_features_a_Ca.png',
-        europeenne: 'A_high-resolution_digital_photograph_features_a_po.png',
-        amerique: 'avatar_amerique_femme.jpg',
-        senior: 'avatar_senior_femme.jpg',
-        autre: 'avatar_generique.jpg'
-      };
-      if (avatars[value]) {
-        profilePic.src = base + avatars[value];
-      }
-    }
-  </script>
-</head>
-<body class="bg-gray-100 font-sans text-gray-800">
-  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
-      <h1 class="text-2xl font-bold">RecovAI</h1>
-    </div>
-    <span class="text-sm">Espace débiteur</span>
-  </header>
-
-  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
-    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
-
-    <!-- Section Photo de profil -->
-    <div class="flex items-center space-x-6 mb-6">
-      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
-      <div>
-        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
-        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
-        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
-      </div>
-    </div>
-
-    <!-- Section Choix d'avatar -->
-    <div class="mb-6">
-      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
-      <select id="avatarOrigin" onchange="updateAvatar()" class="block w-full p-2 border border-gray-300 rounded">
-        <option value="">-- Sélectionnez --</option>
-        <option value="africain">Afrique (Homme)</option>
-        <option value="africain_femme">Afrique (Femme)</option>
-        <option value="asiatique">Asie (Homme)</option>
-        <option value="asiatique_femme">Asie (Femme)</option>
-        <option value="europeen">Europe (Homme)</option>
-        <option value="europeenne">Europe (Femme)</option>
-        <option value="amerique">Amérique (Femme)</option>
-        <option value="senior">Personne âgée</option>
-        <option value="autre">Autre</option>
-      </select>
-    </div>
-
-    <!-- Infos personnelles -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm">Nom</label>
-        <input type="text" value="Dupont" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Prénom</label>
-        <input type="text" value="Jean" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Email</label>
-        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Téléphone</label>
-        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
-      </div>
-      <div class="md:col-span-2">
-        <label class="block text-sm">Adresse</label>
-        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Montant dû (€)</label>
-        <input type="text" value="450.00" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Statut du dossier</label>
-        <select class="w-full border rounded p-2">
-          <option value="attente">En attente</option>
-          <option value="relancé">Relancé</option>
-          <option value="réglé">Réglé</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="mt-6 text-right">
-      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
-    </div>
-  </main>
-
-  <footer class="bg-gray-800 text-white text-center py-6 mt-10 text-sm">
-    <div class="flex justify-center mb-2">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo de l'entreprise" class="h-10">
-    </div>
-    <p class="font-semibold">NeuroCred Solutions</p>
-    <p>39 Rue des Innovateurs, 92110 Clichy, France</p>
-    <p>Tél. : +33 1 84 25 73 00 | Email : contact@neurocred.fr</p>
-    <p class="text-gray-400 mt-2">© 2025 RecovAI - Tous droits réservés</p>
-  </footer>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil du débiteur - RecovAI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script>
-    function updateAvatar() {
-      const select = document.getElementById('avatarOrigin');
-      const profilePic = document.getElementById('profilePic');
-      const value = select.value;
-      const base = '/mnt/data/';
-      const avatars = {
-        africain: 'A_digital_photograph_features_a_portrait_of_a_youn.png',
-        africain_femme: 'A_digital_photograph_headshot_features_a_young_Afr.png',
-        asiatique: 'A_digital_photograph_portrait_features_a_young_Eas.png',
-        asiatique_femme: 'A_high-resolution_digital_photograph_features_a_lo.png',
-        europeen: 'A_high-resolution_digital_photograph_features_a_Ca.png',
-        europeenne: 'A_high-resolution_digital_photograph_features_a_po.png',
-        amerique: 'avatar_amerique_femme.jpg',
-        senior: 'avatar_senior_femme.jpg',
-        autre: 'avatar_generique.jpg'
-      };
-      if (avatars[value]) {
-        profilePic.src = base + avatars[value];
-      }
-    }
-  </script>
-</head>
-<body class="bg-gray-100 font-sans text-gray-800">
-  <header class="bg-blue-900 text-white p-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo RecovAI" class="h-10">
-      <h1 class="text-2xl font-bold">RecovAI</h1>
-    </div>
-    <span class="text-sm">Espace débiteur</span>
-  </header>
-
-  <main class="max-w-4xl mx-auto p-6 bg-white shadow-md mt-6 rounded-lg">
-    <h2 class="text-xl font-semibold mb-4">Profil du débiteur</h2>
-
-    <!-- Section Photo de profil -->
-    <div class="flex items-center space-x-6 mb-6">
-      <img id="profilePic" src="https://via.placeholder.com/120" alt="Photo de profil" class="w-24 h-24 rounded-full shadow">
-      <div>
-        <label class="block mb-2 text-sm font-medium text-gray-700">Téléverser une photo</label>
-        <input type="file" accept="image/*" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
-        <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG.</p>
-      </div>
-    </div>
-
-    <!-- Section Choix d'avatar -->
-    <div class="mb-6">
-      <label for="avatarOrigin" class="block mb-2 text-sm font-medium text-gray-700">Choisir un avatar selon votre origine</label>
-      <select id="avatarOrigin" onchange="updateAvatar()" class="block w-full p-2 border border-gray-300 rounded">
-        <option value="">-- Sélectionnez --</option>
-        <option value="africain">Afrique (Homme)</option>
-        <option value="africain_femme">Afrique (Femme)</option>
-        <option value="asiatique">Asie (Homme)</option>
-        <option value="asiatique_femme">Asie (Femme)</option>
-        <option value="europeen">Europe (Homme)</option>
-        <option value="europeenne">Europe (Femme)</option>
-        <option value="amerique">Amérique (Femme)</option>
-        <option value="senior">Personne âgée</option>
-        <option value="autre">Autre</option>
-      </select>
-    </div>
-
-    <!-- Infos personnelles -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm">Nom</label>
-        <input type="text" value="Dupont" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Prénom</label>
-        <input type="text" value="Jean" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Email</label>
-        <input type="email" value="jean.dupont@email.fr" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Téléphone</label>
-        <input type="text" value="+33 6 12 34 56 78" class="w-full border rounded p-2">
-      </div>
-      <div class="md:col-span-2">
-        <label class="block text-sm">Adresse</label>
-        <input type="text" value="25 Rue du Repos, 75010 Paris" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Montant dû (€)</label>
-        <input type="text" value="450.00" class="w-full border rounded p-2">
-      </div>
-      <div>
-        <label class="block text-sm">Statut du dossier</label>
-        <select class="w-full border rounded p-2">
-          <option value="attente">En attente</option>
-          <option value="relancé">Relancé</option>
-          <option value="réglé">Réglé</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="mt-6 text-right">
-      <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Enregistrer</button>
-    </div>
-  </main>
-
-  <footer class="bg-gray-800 text-white text-center py-6 mt-10 text-sm">
-    <div class="flex justify-center mb-2">
-      <img src="/mnt/data/A_logo_for_NeuroCred_Solutions'_RecovAI_product_is.png" alt="Logo de l'entreprise" class="h-10">
-    </div>
-    <p class="font-semibold">NeuroCred Solutions</p>
-    <p>39 Rue des I
-      <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mentions Légales - RecovAI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-  <header class="bg-blue-900 text-white p-4">
-    <h1 class="text-xl font-bold">Mentions Légales</h1>
-  </header>
-
-  <main class="max-w-4xl mx-auto p-6 bg-white shadow mt-6 rounded">
-    <h2 class="text-lg font-semibold mb-4">Informations légales</h2>
-    <p><strong>Nom de l’entreprise :</strong> NeuroCred Solutions</p>
-    <p><strong>Adresse :</strong> 39 Rue des Innovateurs, 92110 Clichy, France</p>
-    <p><strong>Téléphone :</strong> +33 1 84 25 73 00</p>
-    <p><strong>Email :</strong> contact@neurocred.fr</p>
-    <p><strong>Numéro SIRET :</strong> 891 234 567 00014</p>
-    <p><strong>Directeur de publication :</strong> Mme Kelyane Dupuis</p>
-    <p><strong>Hébergeur :</strong> OVH - 2 rue Kellermann, 59100 Roubaix, France</p>
-  </main>
-
-  <footer class="text-center text-sm text-gray-500 mt-10 py-4">
-    <p>© 2025 RecovAI - Tous droits réservés</p>
-    <a href="index.html" class="text-blue-500 underline">Retour à l'accueil</a>
-  </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Show assistant speech bubble after delay
+        window.addEventListener('DOMContentLoaded', (event) => {
+            setTimeout(() => {
+                document.getElementById('assistantSpeech').classList.remove('opacity-0');
+            }, 1500);
+            
+            // Login modal logic
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const loginModal = document.getElementById('loginModal');
+            const closeLoginModal = document.getElementById('closeLoginModal');
+            const switchToRegister = document.getElementById('switchToRegister');
+            
+            loginBtn.addEventListener('click', () => {
+                loginModal.classList.remove('hidden');
+            });
+            
+            registerBtn.addEventListener('click', () => {
+                loginModal.classList.remove('hidden');
+            });
+            
+            closeLoginModal.addEventListener('click', () => {
+                loginModal.classList.add('hidden');
+            });
+            
+            switchToRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Here you would typically switch to a register form
+                alert("Affichage du formulaire d'inscription");
+            });
+            
+            // Initialize charts
+            const debtCtx = document.getElementById('debtChart').getContext('2d');
+            const debtChart = new Chart(debtCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['EDF', 'Orange', 'SFR', 'Engie', 'Autres'],
+                    datasets: [{
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: [
+                            '#3B82F6',
+                            '#F59E0B',
+                            '#10B981',
+                            '#6366F1',
+                            '#9CA3AF'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+            
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            const performanceChart = new Chart(performanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+                    datasets: [{
+                        label: 'Dettes réglées',
+                        data: [30, 35, 40, 45, 50, 55],
+                        backgroundColor: '#3B82F6'
+                    }, {
+                        label: 'Dettes en retard',
+                        data: [20, 18, 15, 12, 10, 8],
+                        backgroundColor: '#EF4444'
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
