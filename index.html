@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=undefined"></script>
+
     <style>
         :root {
             --primary: #2563eb;
@@ -901,16 +903,22 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Typed.js for Clara AI chat
-        document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('typed-text')) {
-                const typed = new Typed('#typed-text', {
-                    strings: ['Bonjour ! Je m\'appelle Clara', 'Je peux vous aider à récupérer vos créances', 'Essayez-moi en tapant un message'],
-                    typeSpeed: 50,
-                    backSpeed: 30,
-                    loop: true,
-                    showCursor: true,
-                    cursorChar: '|',
+        const typed = new Typed('#typed-text', {
+    strings: [
+        "Bonjour ! Je m'appelle Clarins",
+        "Je peux vous aider à récupérer vos créances",
+        "Essayez-moi en tapant un message"
+    ],
+    typeSpeed: 50,
+    backSpeed: 30,
+    loop: true,
+    showCursor: true,
+    cursorChar: '|',
+    onStringTyped: function(index) {
+        responsiveVoice.speak(typed.strings[index], "French Female");
+    }
+});
+
                 });
             }
 
