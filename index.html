@@ -22,12 +22,16 @@
 <body class="bg-gray-50 font-sans">
     <!-- Header Navigation -->
     <header class="fixed w-full bg-white shadow-md z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-robot text-blue-600 text-2xl"></i>
-                <span class="text-xl font-bold text-blue-900">RecovAI</span>
-            </div>
-            <div class="hidden md:flex space-x-6">
+        <div class="md:w-1/2 flex justify-center">
+    <div class="relative w-64 h-64 md:w-80 md:h-80 bg-white rounded-full overflow-hidden shadow-2xl floating">
+        <img src="https://cdn4.iconfinder.com/data/icons/business-avatar/500/Avatar_woman_business_person_manager_HR_2-512.png" alt="Assistante IA" class="w-full h-full object-cover">
+        <div id="assistantSpeech" class="absolute -top-20 -left-10 w-64 bg-white text-gray-800 p-3 rounded-lg shadow-md opacity-0 transition-opacity duration-500">
+            <p class="text-sm">Bonjour et bienvenue sur RecovAI, votre assistante de gestion de créances. Veuillez vous connecter.</p>
+            <div class="absolute -bottom-3 left-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white"></div>
+        </div>
+    </div>
+</div>
+
                 <a href="#features" class="text-gray-700 hover:text-blue-600">Fonctionnalités</a>
                 <a href="#testimonials" class="text-gray-700 hover:text-blue-600">Témoignages</a>
                 <a href="#pricing" class="text-gray-700 hover:text-blue-600">Tarifs</a>
@@ -58,7 +62,20 @@
             <div class="md:w-1/2 flex justify-center">
                 <div class="relative w-64 h-64 md:w-80 md:h-80 bg-white rounded-full overflow-hidden shadow-2xl floating">
                     <img src="https://cdn4.iconfinder.com/data/icons/business-avatar/500/Avatar_woman_business_person_manager_HR_2-512.png" alt="Assistante IA" class="w-full h-full object-cover">
-                    <div id="assistantSpeech" class="absolute -top-20 -left-10 w-64 bg-white text-gray-800 p-3 rounded-lg shadow-md opacity-0 transition-opacity duration-500">
+                    <<div class="relative w-64 h-64 md:w-80 md:h-80 bg-white rounded-full overflow-hidden shadow-2xl floating">
+    <img src="Image 6 juin 2025.png" alt="Assistante IA" class="w-full h-full object-cover">
+    
+    <div id="assistantSpeech" class="absolute -top-20 -left-10 w-64 bg-white text-gray-800 p-3 rounded-lg shadow-md opacity-0 transition-opacity duration-500">
+        <p id="speechText" class="text-sm">Bonjour et bienvenue sur RecovAI. Veuillez vous connecter.</p>
+        <div class="absolute -bottom-3 left-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white"></div>
+    </div>
+
+    <!-- Micro bouton -->
+    <button id="startListening" class="absolute bottom-4 right-4 bg-blue-600 text-white p-2 rounded-full shadow hover:bg-blue-700 transition">
+        <i class="fas fa-microphone"></i>
+    </button>
+</div>
+tion-500">
                         <p class="text-sm">Bonjour et bienvenue sur RecovAI, votre assistante de gestion de créances. Veuillez vous connecter.</p>
                         <div class="absolute -bottom-3 left-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white"></div>
                     </div>
@@ -903,6 +920,178 @@ fetch('https://api.recovai.com/v1/debts', {
                 }
             });
         });
-    </script>
+    </script><script>
+    window.addEventListener('DOMContentLoaded', () => {
+        // Affiche la bulle de parole après 1.5 seconde
+        const speechBubble = document.getElementById('assistantSpeech');
+        setTimeout(() => {
+            speechBubble.classList.remove('opacity-0');
+        }, 1500);
+
+        // Synthèse vocale
+        const speak = (text) => {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = 'fr-FR'; // Voix française
+            msg.rate = 1;        // Vitesse normale
+            msg.pitch = 1.1;     // Ton légèrement féminin
+            msg.volume = 1;      // Volume maximum
+
+            // Recherche d’une voix féminine française
+            const voices = window.speechSynthesis.getVoices();
+            const frenchVoice = voices.find(voice => voice.lang === 'fr-FR' && voice.name.toLowerCase().includes("femme") || voice.name.toLowerCase().includes("female"));
+
+            if (frenchVoice) {
+                msg.voice = frenchVoice;
+            }
+
+            window.speechSynthesis.speak(msg);
+        };
+
+        // Texte que l’assistante va lire
+        const assistantText = "Bonjour et bienvenue sur RecovAI. Je suis votre assistante. Veuillez vous connecter pour accéder à votre espace personnel.";
+
+        // Attente que les voix soient chargées
+        if (speechSynthesis.getVoices().length === 0) {
+            speechSynthesis.addEventListener('voiceschanged', () => speak(assistantText));
+        } else {
+            speak(assistantText);
+        }
+    });
+</script><script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const speechBubble = document.getElementById('assistantSpeech');
+        const textElement = document.getElementById('speechText');
+        const micButton = document.getElementById('startListening');
+
+        // Affiche la bulle après 1.5 seconde
+        setTimeout(() => {
+            speechBubble.classList.remove('opacity-0');
+        }, 1500);
+
+        // Fonction pour faire parler l'assistante
+        const speak = (text) => {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = 'fr-FR';
+            msg.rate = 1;
+            msg.pitch = 1.1;
+            msg.volume = 1;
+
+            const voices = speechSynthesis.getVoices();
+            const frenchVoice = voices.find(v => v.lang === 'fr-FR' && v.name.toLowerCase().includes("femme"));
+            if (frenchVoice) msg.voice = frenchVoice;
+
+            speechSynthesis.speak(msg);
+        };
+
+        const assistantText = "Bonjour et bienvenue sur RecovAI. Je suis votre assistante. Veuillez vous connecter.";
+        if (speechSynthesis.getVoices().length === 0) {
+            speechSynthesis.addEventListener('voiceschanged', () => speak(assistantText));
+        } else {
+            speak(assistantText);
+        }
+
+        // Écoute vocale
+        micButton.addEventListener('click', () => {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'fr-FR';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            textElement.innerText = "J'écoute...";
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const userSpeech = event.results[0][0].transcript;
+                textElement.innerText = `Vous avez dit : "${userSpeech}"`;
+
+                // Réponse simple automatique
+                if (userSpeech.toLowerCase().includes("paiement")) {
+                    speak("Vous avez deux paiements en retard. Voulez-vous établir un échéancier ?");
+                } else if (userSpeech.toLowerCase().includes("bonjour")) {
+                    speak("Bonjour à vous aussi !");
+                } else {
+                    speak("Désolée, je n'ai pas compris votre demande.");
+                }
+            };
+
+            recognition.onerror = (e) => {
+                textElement.innerText = "Erreur de reconnaissance vocale.";
+                speak("Désolée, je n'ai pas entendu.");
+            };
+        });
+    });
+</script><script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const speechBubble = document.getElementById('assistantSpeech');
+        const textElement = document.getElementById('speechText');
+        const micButton = document.getElementById('startListening');
+
+        setTimeout(() => {
+            speechBubble.classList.remove('opacity-0');
+        }, 1500);
+
+        const speak = (text) => {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = 'fr-FR';
+            msg.rate = 1;
+            msg.pitch = 1.1;
+            msg.volume = 1;
+
+            const voices = speechSynthesis.getVoices();
+            const frenchVoice = voices.find(v => v.lang === 'fr-FR' && v.name.toLowerCase().includes("femme"));
+            if (frenchVoice) msg.voice = frenchVoice;
+
+            speechSynthesis.speak(msg);
+        };
+
+        const assistantIntro = "Bonjour et bienvenue sur RecovAI. Je suis votre assistante IA. Que puis-je faire pour vous aujourd’hui ?";
+        if (speechSynthesis.getVoices().length === 0) {
+            speechSynthesis.addEventListener('voiceschanged', () => speak(assistantIntro));
+        } else {
+            speak(assistantIntro);
+        }
+
+        micButton.addEventListener('click', () => {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'fr-FR';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            textElement.innerText = "J'écoute...";
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const userSpeech = event.results[0][0].transcript.toLowerCase();
+                textElement.innerText = `Vous avez dit : "${userSpeech}"`;
+
+                // Commandes personnalisées
+                if (userSpeech.includes("bonjour") || userSpeech.includes("salut")) {
+                    speak("Bonjour à vous aussi !");
+                } else if (userSpeech.includes("payer") || userSpeech.includes("paiement")) {
+                    speak("Souhaitez-vous payer par carte ou par virement ?");
+                } else if (userSpeech.includes("échéancier") || userSpeech.includes("plan de paiement")) {
+                    speak("Je peux vous proposer un échéancier sur 3 ou 6 mois.");
+                } else if (userSpeech.includes("conseiller") || userSpeech.includes("agent")) {
+                    speak("Je vous mets en relation avec un agent RecovAI.");
+                } else if (userSpeech.includes("je ne comprends pas")) {
+                    speak("Souhaitez-vous que je vous explique comment fonctionne RecovAI ?");
+                } else {
+                    speak("Désolée, je n’ai pas compris votre demande.");
+                }
+            };
+
+            recognition.onerror = (e) => {
+                textElement.innerText = "Erreur de reconnaissance vocale.";
+                speak("Désolée, je n'ai pas entendu.");
+            };
+        });
+    });
+</script>
+
+
+
 </body>
 </html>
