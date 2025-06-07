@@ -1,97 +1,90 @@
-from pathlib import Path
-
-# Contenu HTML complet avec Clara en 3D via ReadyPlayerMe (GLB), chat vocal + interface minimale
-html_code = """
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>RecovAI - Clara 3D</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RecovIA - Gestion Intelligente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer"></script>
   <style>
-    html, body { margin: 0; height: 100%; background: #0f172a; overflow: hidden; }
-    #chatbox {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: #111;
-      padding: 10px;
-      border-radius: 8px;
-      display: flex;
-      gap: 5px;
+    @keyframes typing {
+      0% { width: 0 }
+      100% { width: 100% }
     }
-    #chatbox input {
-      padding: 8px;
-      border: none;
-      border-radius: 4px;
-    }
-    #chatbox button {
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 4px;
-      cursor: pointer;
+    .typewriter {
+      overflow: hidden;
+      border-right: .15em solid orange;
+      white-space: nowrap;
+      animation: typing 4s steps(40, end) forwards;
     }
   </style>
 </head>
-<body>
-  <canvas id="canvas"></canvas>
-  <div id="chatbox">
-    <input id="userText" type="text" placeholder="Parlez à Clara..." />
-    <button onclick="speak()">Parler</button>
-  </div>
+<body class="bg-gray-100 text-gray-900">
+  <!-- Header -->
+  <header class="bg-white shadow p-4 text-center text-2xl font-bold">RecovIA - Clara, assistante IA</header>
 
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- Main -->
+  <main class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Avatar Clara -->
+    <section class="flex justify-center items-center">
+      <model-viewer src="https://models.readyplayer.me/68438ba4aae00c0ddd72cb9c.glb"
+                    alt="Clara - Avatar IA"
+                    auto-rotate camera-controls
+                    style="width: 100%; height: 500px;"></model-viewer>
+    </section>
 
+    <!-- Interface vocale et chat -->
+    <section class="bg-white shadow rounded-xl p-6">
+      <div class="mb-4">
+        <button id="speakBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">🔊 Activer / Désactiver Clara</button>
+      </div>
+      <div class="typewriter text-lg" id="claraText">Bonjour, je suis Clara. Comment puis-je vous aider ?</div>
+      <textarea class="mt-4 w-full border rounded p-2" rows="5" placeholder="Votre message ou question..."></textarea>
+      <button class="mt-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Envoyer</button>
+    </section>
+
+    <!-- Menu spécial débiteur / client -->
+    <section class="md:col-span-2 grid grid-cols-2 gap-4">
+      <div class="bg-white rounded-xl p-6">
+        <h2 class="text-xl font-semibold mb-2">Mode Débiteur</h2>
+        <ul class="list-disc list-inside">
+          <li>Historique des paiements</li>
+          <li>Planification de relance</li>
+          <li>Accord échelonné</li>
+          <li>Upload de justificatifs</li>
+        </ul>
+      </div>
+      <div class="bg-white rounded-xl p-6">
+        <h2 class="text-xl font-semibold mb-2">Mode Nouveau Client</h2>
+        <ul class="list-disc list-inside">
+          <li>Création de compte</li>
+          <li>Simulation de recouvrement</li>
+          <li>Portail personnel sécurisé</li>
+          <li>Paramétrage des notifications</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center p-4 text-sm text-gray-600">&copy; 2025 RecovIA - Tous droits réservés</footer>
+
+  <!-- Script voix Clara -->
   <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 1.6, 2.5);
+    let speaking = false;
+    const btn = document.getElementById('speakBtn');
+    const msg = document.getElementById('claraText').textContent;
 
-    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+    btn.addEventListener('click', () => {
+      if (!speaking) {
+        responsiveVoice.speak(msg, "French Female", {rate: 1});
+        speaking = true;
+      } else {
+        responsiveVoice.cancel();
+        speaking = false;
+      }
     });
-
-    const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-    scene.add(light);
-
-    const loader = new THREE.GLTFLoader();
-    loader.load('https://models.readyplayer.me/68438ba4aae00c0ddd72cb9c.glb', function (gltf) {
-      const model = gltf.scene;
-      model.position.set(0, 0, 0);
-      scene.add(model);
-    }, undefined, function (error) {
-      console.error('Erreur lors du chargement de Clara :', error);
-    });
-
-    function animate() {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    function speak() {
-      const msg = document.getElementById('userText').value;
-      if (!msg.trim()) return;
-      const utterance = new SpeechSynthesisUtterance(msg);
-      utterance.lang = 'fr-FR';
-      utterance.pitch = 1;
-      utterance.rate = 1;
-      speechSynthesis.speak(utterance);
-    }
   </script>
 </body>
 </html>
-"""
-
-# Sauvegarde dans un fichier HTML
-file_path = Path("/mnt/data/RecovAI_Clara3D_complet.html")
-file_path.write_text(html_code, encoding="utf-8")
-
-file_path.name
