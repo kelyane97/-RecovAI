@@ -6,106 +6,59 @@
   <title>RecovAI – L'intelligence au service d’un recouvrement humain</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-sky-50 text-blue-gray-900 font-sans">
+<body>
 
   <!-- Header -->
-  <header class="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 flex items-center justify-center rounded-full bg-[#4C82A9] text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 8v4l3 3" />
-        </svg>
-      </div>
-      <div>
-        <h1 class="text-xl font-bold text-[#1E3A5F]">RecovAI</h1>
-        <p class="text-xs text-[#1E3A5F]">L'intelligence au service du recouvrement humain</p>
-      </div>
-    </div>
-    <nav class="space-x-6 hidden md:flex">
-      <a href="#home" class="font-medium hover:text-[#4C82A9] transition">Accueil</a>
-      <a href="#debtor" class="font-medium hover:text-[#4C82A9] transition">Débiteur</a>
+  <header class="header">
+    <div class="logo">🤖 RecovAI</div>
+    <nav class="nav">
+      <a href="#home">Accueil</a>
+      <a href="#features">Fonctionnalités</a>
+      <a href="#clara">Clara IA</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <!-- Hero Section -->
-  <section id="home" class="max-w-6xl mx-auto px-6 py-16 flex flex-col lg:flex-row items-center justify-between gap-12">
-    <div class="lg:w-1/2 space-y-6">
-      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">L’intelligence au service d’un recouvrement humain.</h1>
-      <p class="text-lg text-[#1E3A5F]/80">RecovAI simplifie le recouvrement de créances grâce à une combinaison d'IA bienveillante et d’un accompagnement humain personnalisé.</p>
-      <div class="mt-6 flex flex-wrap gap-4">
-        <a href="#debtor" class="px-6 py-3 bg-[#4C82A9] text-white font-semibold rounded-lg shadow hover:bg-[#3B6B91] transition transform hover:scale-105">Se connecter</a>
-        <button onclick="document.getElementById('paymentModal').classList.remove('hidden')" class="px-6 py-3 bg-[#FFEEC9] text-[#4C82A9] font-semibold rounded-lg shadow hover:bg-yellow-200 transition">Payer maintenant</button>
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="hero-text">
+      <h1>L’intelligence au service d’un recouvrement humain.</h1>
+      <p>RecovAI simplifie le recouvrement de créances grâce à une IA bienveillante et un accompagnement humain personnalisé.</p>
+      <div class="buttons">
+        <button onclick="alert('Connexion non disponible')">Se connecter</button>
+        <button onclick="alert('Création de compte bientôt disponible')">Créer un compte</button>
       </div>
     </div>
-    <div class="lg:w-1/2 flex justify-center">
-      <img src="https://picsum.photos/id/237/600/600"  alt="Clara IA - Assistante conversationnelle" class="rounded-full object-cover shadow-xl border-4 border-white w-64 h-64" />
+    <div class="hero-image">
+      <img src="assets/images/clara.png" alt="Clara IA">
     </div>
   </section>
 
-  <!-- Espace Débiteur -->
-  <section id="debtor" class="py-16 bg-white">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-3xl font-bold mb-8">Mon Espace Débiteur</h2>
-      <div class="bg-white p-6 rounded-lg shadow-sm">
-        <h3 class="text-xl font-semibold mb-4">Vos Créances</h3>
-        <ul class="space-y-3 text-sm">
-          <li class="flex justify-between">
-            <span>EDF - Facture #EDF12345</span>
-            <span class="font-medium text-red-600">€ 280,00</span>
-          </li>
-          <li class="flex justify-between">
-            <span>SFR - Facture #SFR98765</span>
-            <span class="font-medium text-red-600">€ 95,00</span>
-          </li>
-          <li class="flex justify-between">
-            <span>Engie - Facture #ENG11223</span>
-            <span class="font-medium text-red-600">€ 150,00</span>
-          </li>
-        </ul>
-        <div class="mt-4">
-          <button onclick="alert('Fichier téléchargé : facture_EDF_12345.pdf')" class="px-4 py-2 bg-[#FFEEC9] text-[#4C82A9] font-medium rounded shadow mr-2">Télécharger PDF</button>
-          <button onclick="document.getElementById('paymentModal').classList.remove('hidden')" class="px-4 py-2 bg-[#4C82A9] text-white font-medium rounded shadow">Payer maintenant</button>
-        </div>
+  <!-- Features -->
+  <section id="features" class="features">
+    <h2>Pourquoi choisir RecovAI ?</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>IA Bienveillante</h3>
+        <p>Clara accompagne chaque débiteur avec empathie et personnalisation.</p>
+      </div>
+      <div class="card">
+        <h3>Automatisation</h3>
+        <p>Relances, échéanciers et alertes sont automatisés pour un gain de temps maximal.</p>
+      </div>
+      <div class="card">
+        <h3>Suivi Humain</h3>
+        <p>Chaque dossier peut être pris en main par un gestionnaire dédié.</p>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-white border-t border-gray-200 px-6 py-4 fixed bottom-0 w-full">
-    <div class="max-w-6xl mx-auto text-sm text-center text-[#1E3A5F]/70">
-      © 2025 RecovAI — Tous droits réservés.
-    </div>
+  <footer id="contact">
+    <p>© 2025 RecovAI — Tous droits réservés</p>
+    <p>10 rue de l'Intelligence Éthique, 75000 Paris | contact@recovai.fr</p>
   </footer>
 
-  <!-- Modal Paiement -->
-  <div id="paymentModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
-      <button onclick="document.getElementById('paymentModal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">&times;</button>
-      <h3 class="text-xl font-bold mb-4">Simulateur de Paiement Bancaire</h3>
-      <form onsubmit="handlePayment(event)">
-        <label class="block mb-2">
-          Numéro de carte
-          <input type="text" placeholder="1234 5678 9012 3456" class="w-full p-2 border rounded mt-1" required/>
-        </label>
-        <label class="block mb-2">
-          Nom du titulaire
-          <input type="text" placeholder="Jean Dupont" class="w-full p-2 border rounded mt-1" required/>
-        </label>
-        <label class="block mb-2">
-          Date d’expiration
-          <input type="text" placeholder="MM/AA" class="w-full p-2 border rounded mt-1" required/>
-        </label>
-        <label class="block mb-4">
-          Montant à payer
-          <input type="number" id="amountInput" value="525" class="w-full p-2 border rounded mt-1" readonly/>
-        </label>
-        <button type="submit" class="w-full bg-[#4C82A9] text-white py-2 rounded hover:bg-[#3B6B91] transition">Valider le paiement</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
